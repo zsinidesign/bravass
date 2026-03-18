@@ -536,36 +536,25 @@
     }, { threshold: 0.1 });
     revealEls.forEach(el => observer.observe(el));
 
-    // Workshop cards - simplest possible expand
+    // Workshop cards expand/collapse
     function toggleCard(id, btn) {
       var e1 = document.getElementById('expand1');
       var e2 = document.getElementById('expand2');
       var e3 = document.getElementById('expand3');
       var allBtns = document.querySelectorAll('.learn-more');
-      
-      if (e1.style.display === 'block') {
-        e1.style.display = 'none';
-        e2.style.display = 'none';
-        e3.style.display = 'none';
-        allBtns.forEach(function(b) {
-          b.textContent = '';
-          b.appendChild(document.createTextNode('Read more '));
-          var s = document.createElement('span');
-          s.textContent = '↓';
-          b.appendChild(s);
-        });
-      } else {
-        e1.style.display = 'block';
-        e2.style.display = 'block';
-        e3.style.display = 'block';
-        allBtns.forEach(function(b) {
-          b.textContent = '';
-          b.appendChild(document.createTextNode('Show less '));
-          var s = document.createElement('span');
-          s.textContent = '↑';
-          b.appendChild(s);
-        });
-      }
+      var isOpen = window.getComputedStyle(e1).display !== 'none';
+
+      e1.style.display = isOpen ? 'none' : 'block';
+      e2.style.display = isOpen ? 'none' : 'block';
+      e3.style.display = isOpen ? 'none' : 'block';
+
+      allBtns.forEach(function(b) {
+        b.textContent = '';
+        b.appendChild(document.createTextNode(isOpen ? 'Read more ' : 'Show less '));
+        var s = document.createElement('span');
+        s.textContent = isOpen ? '↓' : '↑';
+        b.appendChild(s);
+      });
     }
 
     // Contact form
