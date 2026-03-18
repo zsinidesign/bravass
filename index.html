@@ -112,19 +112,18 @@
 
     /* WORKSHOPS */
     #workshops { background: var(--warm-white); }
-    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 960px; margin: 0 auto; align-items: start; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 960px; margin: 0 auto; align-items: stretch; }
     .card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 2rem; display: flex; flex-direction: column; transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.2s; }
     .card:hover { box-shadow: 0 10px 36px rgba(139,63,217,0.1); transform: translateY(-3px); border-color: rgba(139,63,217,0.18); }
     .card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
     .card-icon { width: 44px; height: 44px; min-width: 44px; border-radius: 10px; background: #f3ebff; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
     .card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; line-height: 1.25; margin: 0; }
-    .card-body { font-size: 0.88rem; color: var(--text-mid); line-height: 1.75; margin-bottom: 0.75rem; }
-    .learn-more { font-size: 0.82rem; color: var(--purple); background: none; border: none; cursor: pointer; padding: 0.2rem 0; font-family: 'DM Sans', sans-serif; font-weight: 500; display: flex; align-items: center; gap: 0.35rem; transition: gap 0.2s, color 0.2s; width: 100%; }
+    .card-body { font-size: 0.88rem; color: var(--text-mid); line-height: 1.75; margin-bottom: 0.75rem; flex-grow: 1; }
+    .learn-more { font-size: 0.82rem; color: var(--purple); background: none; border: none; cursor: pointer; padding: 0.2rem 0; font-family: 'DM Sans', sans-serif; font-weight: 500; display: flex; align-items: center; gap: 0.35rem; transition: gap 0.2s, color 0.2s; width: 100%; margin-top: auto; }
     .learn-more:hover { gap: 0.6rem; color: var(--purple-bg); }
 
     /* CARD EXPAND */
-    .card-expand { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1); }
-    .card-expand.open { max-height: 800px; }
+    .card-expand { display: none; }
     .card-expand-inner { padding: 1.25rem 0 0.5rem; border-top: 1px solid var(--border); margin-top: 1rem; display: flex; flex-direction: column; gap: 1.1rem; }
     .expand-block { display: flex; flex-direction: column; gap: 0.45rem; }
     .expand-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dark); }
@@ -520,9 +519,13 @@
       });
     });
 
-    // Scroll reveal
+    // Scroll reveal — only hide direct reveal elements, never card-expand panels
     const revealEls = document.querySelectorAll('.reveal');
-    revealEls.forEach(el => el.classList.add('hidden'));
+    revealEls.forEach(el => {
+      if (!el.classList.contains('card-expand')) {
+        el.classList.add('hidden');
+      }
+    });
     const observer = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -533,27 +536,36 @@
     }, { threshold: 0.1 });
     revealEls.forEach(el => observer.observe(el));
 
-    // Workshop card expand/collapse — one click opens ALL cards
-    function toggleCard(expandId, btn) {
-      const allPanels = ['expand1','expand2','expand3'];
-      const allBtns = document.querySelectorAll('.learn-more');
-      const isOpen = document.getElementById('expand1').classList.contains('open');
-
-      allPanels.forEach(id => {
-        document.getElementById(id).classList.toggle('open', !isOpen);
-      });
-
-      allBtns.forEach(b => {
-        b.setAttribute('aria-expanded', String(!isOpen));
-        const arrow = b.querySelector('span');
-        const label = !isOpen ? 'Show less ' : 'Read more ';
-        const arrowChar = !isOpen ? '↑' : '↓';
-        // Update text node safely
-        Array.from(b.childNodes).forEach(node => {
-          if (node.nodeType === 3) node.textContent = label;
+    // Workshop cards - simplest possible expand
+    function toggleCard(id, btn) {
+      var e1 = document.getElementById('expand1');
+      var e2 = document.getElementById('expand2');
+      var e3 = document.getElementById('expand3');
+      var allBtns = document.querySelectorAll('.learn-more');
+      
+      if (e1.style.display === 'block') {
+        e1.style.display = 'none';
+        e2.style.display = 'none';
+        e3.style.display = 'none';
+        allBtns.forEach(function(b) {
+          b.textContent = '';
+          b.appendChild(document.createTextNode('Read more '));
+          var s = document.createElement('span');
+          s.textContent = '↓';
+          b.appendChild(s);
         });
-        if (arrow) arrow.textContent = arrowChar;
-      });
+      } else {
+        e1.style.display = 'block';
+        e2.style.display = 'block';
+        e3.style.display = 'block';
+        allBtns.forEach(function(b) {
+          b.textContent = '';
+          b.appendChild(document.createTextNode('Show less '));
+          var s = document.createElement('span');
+          s.textContent = '↑';
+          b.appendChild(s);
+        });
+      }
     }
 
     // Contact form
