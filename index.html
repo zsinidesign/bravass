@@ -7,6 +7,8 @@
   <meta name="description" content="Workshops and thinking tools designed to help you navigate uncertainty, generate powerful ideas, and move forward with clarity." />
   <meta name="theme-color" content="#8B3FD9" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
+  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -111,13 +113,13 @@
     /* WORKSHOPS */
     #workshops { background: var(--warm-white); }
     .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 960px; margin: 0 auto; align-items: start; }
-    .card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 2rem; display: flex; flex-direction: column; min-height: 320px; transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.2s; }
+    .card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 2rem; display: flex; flex-direction: column; transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.2s; }
     .card:hover { box-shadow: 0 10px 36px rgba(139,63,217,0.1); transform: translateY(-3px); border-color: rgba(139,63,217,0.18); }
     .card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
     .card-icon { width: 44px; height: 44px; min-width: 44px; border-radius: 10px; background: #f3ebff; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
     .card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; line-height: 1.25; margin: 0; }
-    .card-body { font-size: 0.88rem; color: var(--text-mid); line-height: 1.75; margin-bottom: 1rem; }
-    .learn-more { font-size: 0.82rem; color: var(--purple); background: none; border: none; cursor: pointer; padding: 0.4rem 0 0; font-family: 'DM Sans', sans-serif; font-weight: 500; display: flex; align-items: center; gap: 0.35rem; transition: gap 0.2s, color 0.2s; text-align: left; width: 100%; }
+    .card-body { font-size: 0.88rem; color: var(--text-mid); line-height: 1.75; margin-bottom: 0.75rem; }
+    .learn-more { font-size: 0.82rem; color: var(--purple); background: none; border: none; cursor: pointer; padding: 0.2rem 0; font-family: 'DM Sans', sans-serif; font-weight: 500; display: flex; align-items: center; gap: 0.35rem; transition: gap 0.2s, color 0.2s; width: 100%; }
     .learn-more:hover { gap: 0.6rem; color: var(--purple-bg); }
 
     /* CARD EXPAND */
@@ -144,7 +146,10 @@
 
     /* SESSION */
     #session { background: var(--off-white); }
-    .session-inner { max-width: 960px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.4fr; gap: 3rem 4rem; align-items: start; }
+    .session-inner { max-width: 960px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem 4rem; align-items: center; }
+    .calendly-box { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 2.5rem 2rem; display: flex; flex-direction: column; align-items: center; gap: 1.2rem; text-align: center; }
+    .calendly-text { font-size: 1rem; color: var(--text-mid); font-family: 'Playfair Display', serif; font-style: italic; line-height: 1.5; }
+    .calendly-note { font-size: 0.75rem; color: var(--text-light); letter-spacing: 0.03em; }
     .calendly-inline-widget { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
     .session-left h4 { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
     .session-points { list-style: none; margin-bottom: 1.25rem; }
@@ -400,9 +405,12 @@
         <p class="session-format">Format: 30 minute conversation</p>
       </div>
       <div class="session-right reveal reveal-delay-2">
-        <!-- Embedded Calendly -->
-        <div class="calendly-inline-widget" data-url="https://calendly.com/zsinidesign/30min?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=8B3FD9" style="min-width:300px;height:520px;border-radius:10px;overflow:hidden;"></div>
-        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+        <div class="calendly-box">
+          <div class="calendar-icon">📅</div>
+          <p class="calendly-text">Pick a date and time that works for you</p>
+          <a href="" onclick="openCalendly(event)" class="btn btn-primary">See Available Times</a>
+          <p class="calendly-note">Opens a quick booking form</p>
+        </div>
       </div>
     </div>
   </section>
@@ -474,6 +482,16 @@
   <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
 
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // Calendly popup
+    function openCalendly(e) {
+      e.preventDefault();
+      if (typeof Calendly !== 'undefined') {
+        Calendly.initPopupWidget({ url: 'https://calendly.com/zsinidesign/30min' });
+      } else {
+        window.open('https://calendly.com/zsinidesign/30min', '_blank');
+      }
+    }
+
     // Hamburger
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobile-menu');
@@ -516,20 +534,27 @@
     }, { threshold: 0.1 });
     revealEls.forEach(el => observer.observe(el));
 
-    // Workshop card expand/collapse
+    // Workshop card expand/collapse — one click opens ALL cards
     function toggleCard(expandId, btn) {
-      const panel = document.getElementById(expandId);
-      const isOpen = panel.classList.contains('open');
-      panel.classList.toggle('open', !isOpen);
-      btn.setAttribute('aria-expanded', String(!isOpen));
-      const arrow = btn.querySelector('span');
-      if (!isOpen) {
-        btn.childNodes[0].textContent = 'Show less ';
-        if (arrow) arrow.textContent = '↑';
-      } else {
-        btn.childNodes[0].textContent = 'Read more ';
-        if (arrow) arrow.textContent = '↓';
-      }
+      const allPanels = ['expand1','expand2','expand3'];
+      const allBtns = document.querySelectorAll('.learn-more');
+      const isOpen = document.getElementById('expand1').classList.contains('open');
+
+      allPanels.forEach(id => {
+        document.getElementById(id).classList.toggle('open', !isOpen);
+      });
+
+      allBtns.forEach(b => {
+        b.setAttribute('aria-expanded', String(!isOpen));
+        const arrow = b.querySelector('span');
+        if (!isOpen) {
+          b.childNodes[0].textContent = 'Show less ';
+          if (arrow) arrow.textContent = '↑';
+        } else {
+          b.childNodes[0].textContent = 'Read more ';
+          if (arrow) arrow.textContent = '↓';
+        }
+      });
     }
 
     // Contact form
