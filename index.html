@@ -146,11 +146,14 @@
 
     /* SESSION */
     #session { background: var(--off-white); }
-    .session-inner { max-width: 960px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem 4rem; align-items: center; }
-    .calendly-box { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 2.5rem 2rem; display: flex; flex-direction: column; align-items: center; gap: 1.2rem; text-align: center; }
-    .calendly-text { font-size: 1rem; color: var(--text-mid); font-family: 'Playfair Display', serif; font-style: italic; line-height: 1.5; }
-    .calendly-note { font-size: 0.75rem; color: var(--text-light); letter-spacing: 0.03em; }
-    .calendly-inline-widget { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .session-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.6fr; gap: 3rem 4rem; align-items: start; }
+    .session-left h4 { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
+    .session-points { list-style: none; margin-bottom: 1.25rem; }
+    .session-points li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.92rem; color: var(--text-mid); padding: 0.32rem 0; }
+    .session-points li .dot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--purple); flex-shrink: 0; margin-top: 2px; }
+    .session-format { font-size: 0.8rem; color: var(--text-light); letter-spacing: 0.04em; }
+    .session-right { display: flex; flex-direction: column; align-items: stretch; }
+    .calendly-inline-widget { width: 100% !important; min-width: unset !important; height: 650px !important; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: #fff; }
     .session-left h4 { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
     .session-points { list-style: none; margin-bottom: 1.25rem; }
     .session-points li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.92rem; color: var(--text-mid); padding: 0.32rem 0; }
@@ -199,7 +202,7 @@
       .nav-links { display: none; }
       .hamburger { display: flex; }
       .about-grid, .session-inner { grid-template-columns: 1fr; gap: 2rem; }
-      .calendly-inline-widget { min-width: unset !important; width: 100% !important; }
+      .calendly-inline-widget { height: 580px !important; }
       .cards { grid-template-columns: 1fr; }
       .transforms { grid-template-columns: 1fr; gap: 0.9rem; }
       .transform-item .from { min-width: 90px; }
@@ -405,12 +408,8 @@
         <p class="session-format">Format: 30 minute conversation</p>
       </div>
       <div class="session-right reveal reveal-delay-2">
-        <div class="calendly-box">
-          <div class="calendar-icon">📅</div>
-          <p class="calendly-text">Pick a date and time that works for you</p>
-          <a href="" onclick="openCalendly(event)" class="btn btn-primary">See Available Times</a>
-          <p class="calendly-note">Opens a quick booking form</p>
-        </div>
+        <div class="calendly-inline-widget" data-url="https://calendly.com/zsinidesign/30min?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=8B3FD9"></div>
+        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
       </div>
     </div>
   </section>
@@ -547,13 +546,13 @@
       allBtns.forEach(b => {
         b.setAttribute('aria-expanded', String(!isOpen));
         const arrow = b.querySelector('span');
-        if (!isOpen) {
-          b.childNodes[0].textContent = 'Show less ';
-          if (arrow) arrow.textContent = '↑';
-        } else {
-          b.childNodes[0].textContent = 'Read more ';
-          if (arrow) arrow.textContent = '↓';
-        }
+        const label = !isOpen ? 'Show less ' : 'Read more ';
+        const arrowChar = !isOpen ? '↑' : '↓';
+        // Update text node safely
+        Array.from(b.childNodes).forEach(node => {
+          if (node.nodeType === 3) node.textContent = label;
+        });
+        if (arrow) arrow.textContent = arrowChar;
       });
     }
 
