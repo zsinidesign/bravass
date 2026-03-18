@@ -408,7 +408,7 @@
       </div>
       <div class="session-right reveal reveal-delay-2">
         <div class="calendly-inline-widget" data-url="https://calendly.com/zsinidesign/30min?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=8B3FD9"></div>
-        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+        
       </div>
     </div>
   </section>
@@ -479,17 +479,7 @@
 
   <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    // Calendly popup
-    function openCalendly(e) {
-      e.preventDefault();
-      if (typeof Calendly !== 'undefined') {
-        Calendly.initPopupWidget({ url: 'https://calendly.com/zsinidesign/30min' });
-      } else {
-        window.open('https://calendly.com/zsinidesign/30min', '_blank');
-      }
-    }
-
+  <script>
     // Hamburger
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobile-menu');
