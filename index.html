@@ -4,544 +4,283 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bravass – Clarity in a Noisy World</title>
+  <meta name="description" content="Workshops and thinking tools designed to help you navigate uncertainty, generate powerful ideas, and move forward with clarity." />
+  <meta name="theme-color" content="#8B3FD9" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --purple: #8B3FD9;
-      --purple-light: #A855F7;
-      --purple-bg: #7C3AED;
-      --off-white: #F5F3EF;
-      --warm-white: #FAFAF8;
-      --text-dark: #1a1a1a;
-      --text-mid: #4a4a4a;
-      --text-light: #888;
-      --border: #e8e4dc;
+      --purple: #8B3FD9; --purple-light: #A855F7; --purple-bg: #7C3AED;
+      --off-white: #F5F3EF; --warm-white: #FAFAF8;
+      --text-dark: #1a1a1a; --text-mid: #4a4a4a; --text-light: #888; --border: #e8e4dc;
     }
-
     html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--warm-white); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--warm-white);
-      color: var(--text-dark);
-      line-height: 1.6;
-    }
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 5%; background: rgba(255,255,255,0.92); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(0,0,0,0.06); transition: box-shadow 0.3s; }
+    nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
+    .logo { display: flex; align-items: center; text-decoration: none; }
+    .logo svg { height: 36px; width: auto; color: #4F4F4F; transition: color 0.3s; }
+    .logo-footer svg { height: 29px; width: auto; color: #4F4F4F; opacity: 0.8; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    .nav-links a { font-size: 0.88rem; color: var(--text-mid); text-decoration: none; letter-spacing: 0.03em; transition: color 0.2s; position: relative; padding-bottom: 2px; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1.5px; background: var(--purple); transition: width 0.25s; }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+    .nav-links a:hover, .nav-links a.active { color: var(--purple); }
+    .nav-cta { background: var(--purple) !important; color: #fff !important; padding: 0.5rem 1.1rem !important; border-radius: 4px; }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: var(--purple-bg) !important; }
 
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.1rem 5%;
-      background: rgba(255,255,255,0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-    }
+    /* HAMBURGER */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text-dark); border-radius: 2px; transition: all 0.3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu { display: none; position: fixed; top: 60px; left: 0; right: 0; background: rgba(255,255,255,0.97); backdrop-filter: blur(14px); padding: 1.5rem 5% 2rem; border-bottom: 1px solid var(--border); z-index: 199; flex-direction: column; gap: 1.2rem; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: 1rem; color: var(--text-mid); text-decoration: none; padding: 0.5rem 0; border-bottom: 1px solid var(--border); transition: color 0.2s; }
+    .mobile-menu a:hover { color: var(--purple); }
+    .mobile-menu .nav-cta { border: none; text-align: center; margin-top: 0.5rem; display: block; padding: 0.75rem !important; }
 
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: var(--text-dark);
-      text-decoration: none;
-      letter-spacing: 0.02em;
-    }
+    /* REVEAL ANIMATIONS */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.12s; }
+    .reveal-delay-2 { transition-delay: 0.22s; }
+    .reveal-delay-3 { transition-delay: 0.32s; }
 
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
+    /* HERO */
+    #hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 0 5%; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: url('hero.jpg') center/cover no-repeat; filter: brightness(0.52); transform: scale(1.05); animation: heroZoom 14s ease-out forwards; }
+    @keyframes heroZoom { to { transform: scale(1); } }
+    .hero-content { position: relative; max-width: 680px; color: #fff; padding-top: 5rem; }
+    .hero-content h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 700; line-height: 1.15; margin-bottom: 1.1rem; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s 0.2s forwards; }
+    .hero-content p { font-size: 1rem; font-weight: 300; color: rgba(255,255,255,0.85); margin-bottom: 2rem; max-width: 460px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s 0.45s forwards; }
+    .btn-group { display: flex; gap: 0.9rem; flex-wrap: wrap; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s 0.65s forwards; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
-    .nav-links a {
-      font-size: 0.88rem;
-      color: var(--text-mid);
-      text-decoration: none;
-      letter-spacing: 0.03em;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover { color: var(--purple); }
-
-    /* ── HERO ── */
-    #hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 0 5%;
-      overflow: hidden;
-    }
-
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80') center/cover no-repeat;
-      filter: brightness(0.55);
-    }
-
-    .hero-content {
-      position: relative;
-      max-width: 680px;
-      color: #fff;
-      padding-top: 5rem;
-    }
-
-    .hero-content h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.4rem, 5vw, 4rem);
-      font-weight: 700;
-      line-height: 1.15;
-      margin-bottom: 1.1rem;
-    }
-
-    .hero-content p {
-      font-size: 1rem;
-      font-weight: 300;
-      color: rgba(255,255,255,0.85);
-      margin-bottom: 2rem;
-      max-width: 460px;
-    }
-
-    .btn-group { display: flex; gap: 0.9rem; flex-wrap: wrap; }
-
-    .btn {
-      display: inline-block;
-      padding: 0.75rem 1.6rem;
-      border-radius: 4px;
-      font-size: 0.88rem;
-      font-weight: 500;
-      letter-spacing: 0.03em;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      transition: transform 0.18s, box-shadow 0.18s;
-    }
-
+    /* BUTTONS */
+    .btn { display: inline-block; padding: 0.75rem 1.6rem; border-radius: 4px; font-size: 0.88rem; font-weight: 500; letter-spacing: 0.03em; text-decoration: none; cursor: pointer; border: none; transition: transform 0.18s, box-shadow 0.18s, background 0.2s; font-family: 'DM Sans', sans-serif; }
     .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.18); }
-
     .btn-primary { background: var(--purple); color: #fff; }
+    .btn-primary:hover { background: var(--purple-bg); }
     .btn-outline { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,0.7); }
 
-    /* ── SECTIONS ── */
+    /* SECTIONS */
     section { padding: 5.5rem 5%; }
+    h2.section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 600; text-align: center; margin-bottom: 0.6rem; }
+    .title-line { width: 36px; height: 2.5px; background: var(--purple); margin: 0 auto 2.5rem; border-radius: 99px; }
 
-    .section-label {
-      display: block;
-      text-align: center;
-      font-size: 0.8rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-light);
-      margin-bottom: 0.5rem;
-    }
-
-    h2.section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.8rem, 3vw, 2.5rem);
-      font-weight: 600;
-      text-align: center;
-      margin-bottom: 0.6rem;
-    }
-
-    .title-line {
-      width: 36px;
-      height: 2.5px;
-      background: var(--purple);
-      margin: 0 auto 2.5rem;
-      border-radius: 99px;
-    }
-
-    /* ── ABOUT ── */
+    /* ABOUT */
     #about { background: var(--off-white); }
-
-    .about-intro {
-      text-align: center;
-      max-width: 560px;
-      margin: 0 auto 3rem;
-      font-size: 1rem;
-      color: var(--text-mid);
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem 4rem;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .about-col h4 {
-      font-size: 0.85rem;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.9rem;
-      color: var(--text-dark);
-    }
-
+    .about-intro { text-align: center; max-width: 560px; margin: 0 auto 3rem; font-size: 1rem; color: var(--text-mid); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem 4rem; max-width: 800px; margin: 0 auto; }
+    .about-col h4 { font-size: 0.85rem; font-weight: 500; letter-spacing: 0.05em; margin-bottom: 0.9rem; }
     .about-col ul { list-style: none; }
+    .about-col ul li { font-size: 0.9rem; color: var(--text-mid); padding: 0.25rem 0; display: flex; align-items: center; gap: 0.5rem; }
+    .about-col ul li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--purple); flex-shrink: 0; }
+    .about-col p { font-size: 0.9rem; color: var(--text-mid); line-height: 1.75; font-style: italic; }
 
-    .about-col ul li {
-      font-size: 0.9rem;
-      color: var(--text-mid);
-      padding: 0.25rem 0;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .about-col ul li::before {
-      content: '';
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--purple);
-      flex-shrink: 0;
-    }
-
-    .about-col p {
-      font-size: 0.9rem;
-      color: var(--text-mid);
-      line-height: 1.75;
-      font-style: italic;
-    }
-
-    /* ── WORKSHOPS ── */
+    /* WORKSHOPS */
     #workshops { background: var(--warm-white); }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-      max-width: 960px;
-      margin: 0 auto;
-    }
-
-    .card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 2rem;
-      transition: box-shadow 0.2s, transform 0.2s;
-    }
-
-    .card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.08); transform: translateY(-3px); }
-
-    .card-icon {
-      width: 36px; height: 36px;
-      border-radius: 8px;
-      background: #f3ebff;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1rem;
-      font-size: 1.1rem;
-    }
-
-    .card h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.15rem;
-      font-weight: 600;
-      margin-bottom: 0.75rem;
-    }
-
-    .card p {
-      font-size: 0.875rem;
-      color: var(--text-mid);
-      line-height: 1.7;
-      margin-bottom: 1.1rem;
-    }
-
-    .learn-more {
-      font-size: 0.82rem;
-      color: var(--purple);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-    }
-
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; max-width: 960px; margin: 0 auto; }
+    .card { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 2rem; transition: box-shadow 0.25s, transform 0.25s; cursor: pointer; }
+    .card:hover { box-shadow: 0 10px 36px rgba(139,63,217,0.12); transform: translateY(-4px); }
+    .card-icon { width: 40px; height: 40px; border-radius: 8px; background: #f3ebff; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; font-size: 1.15rem; }
+    .card h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 600; margin-bottom: 0.75rem; }
+    .card p { font-size: 0.875rem; color: var(--text-mid); line-height: 1.7; margin-bottom: 1.1rem; }
+    .learn-more { font-size: 0.82rem; color: var(--purple); text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem; font-weight: 500; background: none; border: none; cursor: pointer; padding: 0; font-family: 'DM Sans', sans-serif; }
     .learn-more:hover { text-decoration: underline; }
 
-    /* ── CTA BAND ── */
-    #cta-band {
-      background: var(--purple-bg);
-      color: #fff;
-      text-align: center;
-      padding: 5rem 5%;
-    }
+    /* CARD EXPAND */
+    .card-expand { max-height: 0; overflow: hidden; transition: max-height 0.45s ease; }
+    .card-expand.open { max-height: 600px; }
+    .card-expand-inner { padding: 1rem 0 0.5rem; border-top: 1px solid var(--border); margin-top: 1rem; display: flex; flex-direction: column; gap: 1rem; }
+    .expand-block { display: flex; flex-direction: column; gap: 0.4rem; }
+    .expand-label { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--purple); }
+    .expand-for { font-size: 0.88rem; color: var(--text-mid); font-style: italic; }
+    .expand-block ul { list-style: none; display: flex; flex-direction: column; gap: 0.3rem; }
+    .expand-block ul li { font-size: 0.86rem; color: var(--text-mid); padding-left: 1rem; position: relative; line-height: 1.55; }
+    .expand-block ul li::before { content: '–'; position: absolute; left: 0; color: var(--purple); }
 
-    #cta-band h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.8rem, 3vw, 2.6rem);
-      font-weight: 600;
-      margin-bottom: 0.75rem;
-    }
+    /* MODALS */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 300; align-items: center; justify-content: center; padding: 1rem; backdrop-filter: blur(4px); }
+    .modal-overlay.open { display: flex; }
+    .modal { background: #fff; border-radius: 12px; padding: 2.5rem; max-width: 520px; width: 100%; position: relative; animation: modalIn 0.28s ease; }
+    @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .modal-close { position: absolute; top: 1rem; right: 1.2rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-light); line-height: 1; }
+    .modal-close:hover { color: var(--text-dark); }
+    .modal-icon { width: 48px; height: 48px; border-radius: 10px; background: #f3ebff; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 1.2rem; }
+    .modal h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 0.75rem; }
+    .modal p { font-size: 0.92rem; color: var(--text-mid); line-height: 1.75; margin-bottom: 1rem; }
+    .modal ul { list-style: none; margin-bottom: 1.5rem; }
+    .modal ul li { font-size: 0.88rem; color: var(--text-mid); padding: 0.3rem 0; display: flex; align-items: center; gap: 0.6rem; }
+    .modal ul li::before { content: '✓'; color: var(--purple); font-weight: 700; }
 
-    #cta-band p {
-      font-size: 0.95rem;
-      color: rgba(255,255,255,0.8);
-      margin-bottom: 2.5rem;
-    }
+    /* CTA BAND */
+    #cta-band { background: var(--purple-bg); color: #fff; text-align: center; padding: 5rem 5%; }
+    #cta-band h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 600; margin-bottom: 0.75rem; }
+    #cta-band > p { font-size: 0.95rem; color: rgba(255,255,255,0.8); margin-bottom: 2.5rem; }
+    .transforms { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem 3rem; max-width: 680px; margin: 0 auto 2rem; }
+    .transform-item { display: flex; align-items: center; gap: 0.75rem; font-size: 0.95rem; }
+    .transform-item .from { color: rgba(255,255,255,0.65); font-style: italic; min-width: 120px; }
+    .transform-item .arrow { color: rgba(255,255,255,0.5); flex-shrink: 0; }
+    .transform-item .to { color: #fff; font-weight: 600; }
+    .cta-note { font-size: 0.82rem; color: rgba(255,255,255,0.6); margin-top: 1.5rem; }
 
-    .transforms {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      max-width: 700px;
-      margin: 0 auto 2rem;
-    }
-
-    .transform-item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.6rem;
-      font-size: 0.92rem;
-    }
-
-    .transform-item .from { color: rgba(255,255,255,0.65); }
-    .transform-item .arrow { color: rgba(255,255,255,0.5); }
-    .transform-item .to { color: #fff; font-weight: 500; }
-
-    .cta-note {
-      font-size: 0.82rem;
-      color: rgba(255,255,255,0.6);
-      margin-top: 1.5rem;
-    }
-
-    /* ── 1:1 SESSION ── */
+    /* SESSION */
     #session { background: var(--off-white); }
-
-    .session-inner {
-      max-width: 820px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem 4rem;
-      align-items: start;
-    }
-
-    .session-left h4 {
-      font-size: 0.85rem;
-      font-weight: 500;
-      margin-bottom: 1rem;
-      letter-spacing: 0.04em;
-    }
-
+    .session-inner { max-width: 820px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem 4rem; align-items: start; }
+    .session-left h4 { font-size: 0.85rem; font-weight: 500; margin-bottom: 1rem; letter-spacing: 0.04em; }
     .session-points { list-style: none; margin-bottom: 1.25rem; }
+    .session-points li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.9rem; color: var(--text-mid); padding: 0.3rem 0; }
+    .session-points li .dot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--purple); flex-shrink: 0; margin-top: 2px; }
+    .session-format { font-size: 0.8rem; color: var(--text-light); letter-spacing: 0.04em; }
+    .session-right { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; padding-top: 1rem; }
+    .calendar-icon { width: 56px; height: 56px; background: #f3ebff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; }
 
-    .session-points li {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.6rem;
-      font-size: 0.9rem;
-      color: var(--text-mid);
-      padding: 0.3rem 0;
-    }
-
-    .session-points li .dot {
-      width: 18px; height: 18px;
-      border-radius: 50%;
-      border: 1.5px solid var(--purple);
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .session-format {
-      font-size: 0.8rem;
-      color: var(--text-light);
-      letter-spacing: 0.04em;
-    }
-
-    .session-right {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.5rem;
-      padding-top: 1rem;
-    }
-
-    .calendar-icon {
-      width: 56px; height: 56px;
-      background: #f3ebff;
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.6rem;
-    }
-
-    /* ── TESTIMONIALS ── */
+    /* TESTIMONIALS */
     #testimonials { background: var(--warm-white); }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 780px; margin: 0 auto; }
+    .testimonial { background: var(--off-white); border: 1px solid var(--border); border-radius: 8px; padding: 2rem; text-align: center; transition: transform 0.2s, box-shadow 0.2s; }
+    .testimonial:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.07); }
+    .testimonial .quote-icon { font-size: 2rem; color: var(--purple-light); margin-bottom: 0.75rem; line-height: 1; }
+    .testimonial blockquote { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; line-height: 1.65; }
+    .testimonial-author { margin-top: 1rem; font-size: 0.82rem; color: var(--text-light); letter-spacing: 0.04em; }
 
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      max-width: 780px;
-      margin: 0 auto;
-    }
-
-    .testimonial {
-      background: var(--off-white);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 2rem;
-      text-align: center;
-    }
-
-    .testimonial .quote-icon {
-      font-size: 1.8rem;
-      color: var(--purple-light);
-      margin-bottom: 0.75rem;
-      line-height: 1;
-    }
-
-    .testimonial blockquote {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.05rem;
-      font-style: italic;
-      color: var(--text-dark);
-      line-height: 1.65;
-    }
-
-    /* ── CONTACT ── */
+    /* CONTACT */
     #contact { background: var(--off-white); }
-
-    .contact-form {
-      max-width: 480px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .form-field {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .form-field input,
-    .form-field textarea {
-      padding: 0.75rem 1rem;
-      border: 1px solid var(--border);
-      border-radius: 5px;
-      background: #fff;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      color: var(--text-dark);
-      transition: border-color 0.2s;
-      outline: none;
-    }
-
-    .form-field input::placeholder,
-    .form-field textarea::placeholder { color: var(--text-light); }
-
-    .form-field input:focus,
-    .form-field textarea:focus { border-color: var(--purple); }
-
+    .contact-form { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+    .form-field { display: flex; flex-direction: column; }
+    .form-field input, .form-field textarea { padding: 0.75rem 1rem; border: 1px solid var(--border); border-radius: 5px; background: #fff; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--text-dark); transition: border-color 0.2s, box-shadow 0.2s; outline: none; }
+    .form-field input::placeholder, .form-field textarea::placeholder { color: var(--text-light); }
+    .form-field input:focus, .form-field textarea:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(139,63,217,0.1); }
     .form-field textarea { min-height: 110px; resize: vertical; }
+    .contact-form .btn-primary { align-self: stretch; text-align: center; padding: 0.9rem; font-size: 0.9rem; }
+    .form-success { display: none; text-align: center; padding: 2rem; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; color: #16a34a; font-size: 0.95rem; max-width: 480px; margin: 0 auto; }
+    .social-links { display: flex; justify-content: center; gap: 1.2rem; margin-top: 2.5rem; }
+    .social-links a { width: 40px; height: 40px; border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-mid); text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: border-color 0.2s, color 0.2s, transform 0.2s; }
+    .social-links a:hover { border-color: var(--purple); color: var(--purple); transform: translateY(-2px); }
 
-    .contact-form .btn-primary {
-      align-self: stretch;
-      text-align: center;
-      padding: 0.9rem;
-      font-size: 0.9rem;
-      letter-spacing: 0.04em;
-    }
-
-    .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 1.2rem;
-      margin-top: 2.5rem;
-    }
-
-    .social-links a {
-      width: 36px; height: 36px;
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text-mid);
-      text-decoration: none;
-      font-size: 0.85rem;
-      transition: border-color 0.2s, color 0.2s;
-    }
-
-    .social-links a:hover { border-color: var(--purple); color: var(--purple); }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--off-white);
-      border-top: 1px solid var(--border);
-      padding: 1.5rem 5%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.8rem;
-      color: var(--text-light);
-    }
-
-    footer .logo { font-size: 0.95rem; }
-
-    footer .footer-links {
-      display: flex;
-      gap: 1.5rem;
-      list-style: none;
-    }
-
-    footer .footer-links a {
-      color: var(--text-light);
-      text-decoration: none;
-    }
-
+    /* FOOTER */
+    footer { background: var(--off-white); border-top: 1px solid var(--border); padding: 1.5rem 5%; display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; color: var(--text-light); }
+    footer .footer-links { display: flex; gap: 1.5rem; list-style: none; }
+    footer .footer-links a { color: var(--text-light); text-decoration: none; transition: color 0.2s; }
     footer .footer-links a:hover { color: var(--purple); }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 640px) {
-      nav { padding: 1rem 4%; }
-      .nav-links { gap: 1rem; }
+    /* BACK TO TOP */
+    #back-to-top { position: fixed; bottom: 2rem; right: 2rem; width: 42px; height: 42px; background: var(--purple); color: #fff; border: none; border-radius: 50%; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(10px); transition: opacity 0.3s, transform 0.3s; z-index: 100; box-shadow: 0 4px 14px rgba(139,63,217,0.35); }
+    #back-to-top.visible { opacity: 1; transform: translateY(0); }
+    #back-to-top:hover { background: var(--purple-bg); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
       .about-grid, .session-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .transforms { grid-template-columns: 1fr; gap: 0.9rem; }
+      .transform-item .from { min-width: 90px; }
       footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+      footer .footer-links { flex-wrap: wrap; justify-content: center; }
     }
+
+    /* SKIP LINK — accessibility */
+    .skip-link { position: absolute; top: -100px; left: 1rem; background: var(--purple); color: #fff; padding: 0.6rem 1.2rem; border-radius: 4px; font-size: 0.88rem; text-decoration: none; z-index: 9999; transition: top 0.2s; }
+    .skip-link:focus { top: 1rem; }
+
+    /* FOCUS RINGS — keyboard navigation */
+    :focus-visible { outline: 3px solid rgba(139,63,217,0.6); outline-offset: 3px; border-radius: 3px; }
+    a:focus-visible, button:focus-visible { outline: 3px solid rgba(139,63,217,0.6); outline-offset: 3px; }
+
+    /* REDUCED MOTION — respect user preference */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    /* TEXT SELECTION */
+    ::selection { background: rgba(139,63,217,0.15); color: var(--text-dark); }
+
+    /* FORM LABELS — accessibility */
+    .form-field { display: flex; flex-direction: column; gap: 0.3rem; }
+    .form-field label { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.05em; color: var(--text-mid); }
+
+    /* ENHANCED TRANSITIONS */
+    .card { transition: box-shadow 0.3s cubic-bezier(0.4,0,0.2,1), transform 0.3s cubic-bezier(0.4,0,0.2,1), border-color 0.2s; }
+    .card-icon { transition: transform 0.25s cubic-bezier(0.4,0,0.2,1); }
+    .card:hover .card-icon { transform: scale(1.1); }
+    .learn-more { transition: gap 0.2s ease, color 0.2s; }
+    .learn-more:hover { gap: 0.5rem; text-decoration: none; }
+    .modal-close { transition: color 0.2s, transform 0.25s cubic-bezier(0.4,0,0.2,1); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+    .modal-close:hover { transform: rotate(90deg); }
+    .mobile-menu.open { animation: slideDown 0.25s ease; }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+    .mobile-menu a { transition: color 0.2s, padding-left 0.2s; }
+    .mobile-menu a:hover { padding-left: 0.4rem; }
+    .social-links a { transition: border-color 0.2s, color 0.2s, transform 0.2s, background 0.2s; }
+    .social-links a:hover { background: rgba(139,63,217,0.05); }
+    .logo { transition: opacity 0.2s; }
+    .logo:hover { opacity: 0.75; }
+    #back-to-top { transition: opacity 0.3s, transform 0.3s, background 0.2s; }
+    #back-to-top:hover { transform: translateY(-2px); }
+    .testimonial { transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s cubic-bezier(0.4,0,0.2,1), border-color 0.2s; }
+    .btn { transition: transform 0.18s cubic-bezier(0.4,0,0.2,1), box-shadow 0.18s, background 0.2s; }
+    .btn:active { transform: translateY(0) scale(0.98); }
+    nav { transition: box-shadow 0.3s, background 0.3s; }
   </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
 
   <!-- NAV -->
-  <nav>
-    <a href="#" class="logo">✦ Bravass</a>
-    <ul class="nav-links">
+  <nav id="navbar">
+    <a href="#" class="logo" aria-label="Bravass home">
+      <svg style="height:36px;width:auto;color:#4F4F4F;" viewBox="0 0 961 287" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M172.596 0.792969C175.83 0.292322 180.948 0.447995 184.763 1.14453L185.508 1.29102C198.615 4.06613 209.703 14.6778 213.107 27.627L213.264 28.2451C213.7 30.0432 214.037 34.1389 213.999 37.3281C213.893 46.1567 211.066 53.2427 205.281 58.8799C199.48 64.5333 190.665 68.7668 178.519 71.793C161.668 75.9916 152.91 80.3275 143.766 89.0576C132.779 99.5468 122.478 120.019 118.642 138.899C113.989 161.8 116.775 187.04 126.357 208.817C138.986 237.519 166.358 261.967 197.379 272.274C204.7 274.707 210.059 276.178 215.832 277.028C221.602 277.878 227.769 278.107 236.706 278.07C248.153 278.024 250.532 277.834 257.396 276.396C281.666 271.314 301.498 260.386 318.754 242.586C328.014 233.034 333.251 225.721 338.992 214.322C344.178 204.025 347.282 195.167 349.679 183.819C351.039 177.379 351.32 175.149 351.384 166.205L351.4 161.929C351.422 150.105 351.227 147.031 350.042 140.817C347.362 126.774 340.771 110.167 333.353 98.7783C330.933 95.0644 330.258 93.4496 330.258 91.8398C330.258 90.6217 330.598 89.6035 331.208 88.8213C331.818 88.0391 332.722 87.4608 333.901 87.165C334.755 86.951 335.522 86.9786 336.305 87.3115C337.103 87.6511 337.958 88.3254 338.942 89.4805C340.92 91.8003 343.303 95.9125 346.73 102.62C356.549 121.832 360.693 138.867 360.715 160.087C360.75 195.154 347.746 226.381 323.154 250.295C310.504 262.596 298.262 270.67 282.531 277.09C238.638 295.002 187.862 286.701 152.579 255.854C133.491 239.164 117.805 211.66 112.53 185.615C107.695 161.738 109.839 137.553 118.716 115.777C128.117 92.7137 139.905 79.2476 158.17 70.6064C163.292 68.183 166.022 67.3 180.019 63.5703C182.591 62.8847 187.213 61.088 190.312 59.5742C197.63 55.9995 202.529 50.9713 204.739 44.9971C206.951 39.0202 206.444 32.1693 203.091 25.0078C198.156 14.4708 185.768 7.88536 174.439 9.79102C162.237 11.8432 153.576 20.7298 151.383 33.3975C148.74 48.6606 142.467 59.6204 134.114 63.9736C129.952 66.1438 124.095 65.8856 116.808 63.0332C108.17 59.6525 108.193 59.6591 103.84 58.6543C98.7932 57.4893 92.0775 57.4479 87.8438 58.5742C79.6568 60.7523 72.2797 67.1714 63.248 79.7676C57.3062 88.0545 54.8291 90.4722 50.4121 92.4932C43.5844 95.6163 35.9554 94.862 18.834 89.0859C15.5787 87.9877 12.8765 87.1477 10.9844 86.6348C10.0413 86.3791 9.28582 86.2005 8.75879 86.1143C8.50127 86.0721 8.26802 86.0472 8.08594 86.0547C8.00143 86.0582 7.8761 86.0702 7.75586 86.124C7.61843 86.1856 7.40993 86.3474 7.41016 86.6426L7.42676 86.8174C7.4365 86.8758 7.44915 86.933 7.46191 86.9844C7.49021 87.0982 7.53009 87.231 7.57812 87.377C7.67445 87.6697 7.81167 88.0374 7.97754 88.4531C8.30987 89.2859 8.76673 90.3312 9.26758 91.3896C14.6369 102.73 25.2045 113.771 35.8096 119.102C39.2347 120.823 42.0171 121.911 45.1816 122.562C48.3391 123.212 51.855 123.421 56.7402 123.414C64.0013 123.403 66.4486 123.14 71.9785 121.757C82.4953 119.128 92.9482 114.209 99.5566 108.755C101.226 107.378 102.443 106.607 103.513 106.286C104.548 105.975 105.488 106.074 106.643 106.552C107.694 106.987 108.349 107.498 108.757 108.175C109.17 108.862 109.369 109.788 109.369 111.135C109.369 112.325 109.209 113.053 108.677 113.773C108.114 114.536 107.111 115.326 105.292 116.541C98.1602 121.304 86.15 126.042 75.1514 128.415C71.0007 129.31 64.9616 129.795 59.1387 129.843C53.3075 129.89 47.7615 129.499 44.582 128.671C27.9486 124.341 13.2955 111.808 4.71973 94.5186C2.18088 89.3994 0.831372 85.8947 0.553711 83.5322C0.416023 82.3605 0.549784 81.5276 0.879883 80.9287C1.20406 80.3406 1.75558 79.9093 2.60254 79.6143H2.60352C3.18226 79.4126 3.70913 79.2925 4.38184 79.2861C5.06522 79.2796 5.91949 79.3899 7.14941 79.6768C9.61794 80.2525 13.4945 81.5127 20.3574 83.832C26.8859 86.0384 31.896 87.499 35.7969 88.292C39.6906 89.0836 42.5264 89.2206 44.6846 88.7373C47.4414 88.1201 49.4342 87.3079 51.5254 85.5059C53.5892 83.7274 55.7342 80.9959 58.8418 76.5957C61.2058 73.2481 66.0643 67.5978 69.627 64.0566C74.4309 59.2816 78.4848 56.1973 82.8271 54.3135C87.1648 52.4317 91.831 51.7304 97.8877 51.7871C104.588 51.8503 109.158 52.7423 118.523 55.8408C120.253 56.4131 122.001 56.9167 123.425 57.2676C124.136 57.4429 124.773 57.5813 125.288 57.6709C125.784 57.757 126.223 57.8087 126.51 57.7803L126.509 57.7793C127.35 57.6958 128.39 57.5928 128.819 57.5498C129.116 57.5201 129.43 57.3892 129.729 57.2227C130.036 57.0511 130.371 56.8183 130.719 56.5439C131.415 55.9949 132.197 55.252 132.971 54.4209C134.514 52.7642 136.077 50.7023 136.896 49.0322C137.862 47.0594 138.905 44.1352 139.705 41.3789C140.5 38.6401 141.08 35.9838 141.08 34.5713C141.08 33.1135 141.657 30.4904 142.554 27.6182C143.446 24.7622 144.632 21.7282 145.812 19.4688C150.802 9.91297 161.375 2.53038 172.596 0.792969Z" fill="currentColor"/><path d="M488.725 136.641C490.245 136.641 492.265 137.201 494.785 138.321C497.345 139.441 499.645 141.361 501.685 144.081C503.765 146.761 504.805 150.341 504.805 154.821C504.805 161.661 502.585 166.821 498.145 170.301C493.705 173.741 487.285 175.461 478.885 175.461H458.185C456.105 175.461 454.505 174.921 453.385 173.841C452.305 172.721 451.765 171.101 451.765 168.981V107.661C451.765 105.541 452.305 103.941 453.385 102.861C454.505 101.741 456.105 101.181 458.185 101.181H475.885C484.085 101.181 490.545 102.481 495.265 105.081C499.985 107.681 502.345 112.441 502.345 119.361C502.345 123.561 501.465 126.961 499.705 129.561C497.985 132.121 496.045 133.941 493.885 135.021C491.765 136.101 490.045 136.641 488.725 136.641ZM476.005 167.661C482.285 167.661 486.925 166.541 489.925 164.301C492.965 162.021 494.485 158.581 494.485 153.981C494.485 149.541 492.985 146.241 489.985 144.081C486.985 141.881 483.065 140.781 478.225 140.781H461.905V167.661H476.005ZM477.745 133.401C482.225 133.401 485.765 132.301 488.365 130.101C490.965 127.901 492.265 124.801 492.265 120.801C492.265 116.321 490.805 113.241 487.885 111.561C484.965 109.841 480.885 108.981 475.645 108.981H461.905V133.401H477.745ZM536.202 134.721H553.902C558.382 134.721 561.902 133.581 564.462 131.301C567.062 128.981 568.362 125.701 568.362 121.461C568.362 117.301 567.022 114.181 564.342 112.101C561.702 110.021 558.002 108.981 553.242 108.981H536.202V134.721ZM526.062 107.661C526.062 105.541 526.602 103.941 527.682 102.861C528.802 101.741 530.402 101.181 532.482 101.181H554.682C561.482 101.181 567.162 102.681 571.722 105.681C576.282 108.681 578.562 113.801 578.562 121.041C578.562 126.361 577.242 130.681 574.602 134.001C571.962 137.321 568.582 139.681 564.462 141.081L576.882 168.921C577.362 170.121 577.602 171.181 577.602 172.101C577.602 173.381 577.182 174.401 576.342 175.161C575.542 175.881 574.422 176.241 572.982 176.241C571.262 176.241 569.982 175.821 569.142 174.981C568.302 174.141 567.482 172.721 566.682 170.721L554.382 142.521H536.202V169.761C536.202 171.841 535.762 173.441 534.882 174.561C534.002 175.681 532.742 176.241 531.102 176.241C529.462 176.241 528.202 175.701 527.322 174.621C526.482 173.501 526.062 171.881 526.062 169.761V107.661ZM598.739 176.601C597.379 176.601 596.279 176.221 595.439 175.461C594.599 174.661 594.179 173.561 594.179 172.161C594.179 171.401 594.359 170.481 594.719 169.401L616.199 106.281C617.279 102.601 619.499 100.761 622.859 100.761H626.999C628.719 100.761 630.119 101.221 631.199 102.141C632.319 103.061 633.159 104.441 633.719 106.281L655.199 169.401C655.519 170.361 655.679 171.281 655.679 172.161C655.679 173.601 655.259 174.701 654.419 175.461C653.579 176.221 652.459 176.601 651.059 176.601C649.419 176.601 648.179 176.181 647.339 175.341C646.539 174.461 645.859 173.001 645.299 170.961L640.019 154.881H609.839L604.559 170.961C603.999 173.001 603.299 174.461 602.459 175.341C601.619 176.181 600.379 176.601 598.739 176.601ZM637.499 147.141L625.499 110.721C625.259 109.921 625.079 109.201 624.959 108.561C624.839 109.201 624.659 109.921 624.419 110.721L612.419 147.141H637.499ZM698.836 175.881C694.756 175.881 692.116 174.001 690.916 170.241L670.036 107.781C669.716 106.901 669.556 106.041 669.556 105.201C669.556 103.721 670.036 102.581 670.996 101.781C671.956 100.981 673.156 100.581 674.596 100.581C676.196 100.581 677.356 101.021 678.076 101.901C678.836 102.781 679.516 104.241 680.116 106.281L699.436 167.481L718.876 106.281C719.436 104.281 720.116 102.841 720.916 101.961C721.716 101.041 722.916 100.581 724.516 100.581C725.996 100.581 727.156 101.001 727.996 101.841C728.876 102.641 729.316 103.801 729.316 105.321C729.316 106.161 729.176 106.981 728.896 107.781L707.956 170.241C706.756 174.001 704.096 175.881 699.976 175.881H698.836ZM747.333 176.601C745.973 176.601 744.873 176.221 744.033 175.461C743.193 174.661 742.773 173.561 742.773 172.161C742.773 171.401 742.953 170.481 743.313 169.401L764.793 106.281C765.873 102.601 768.093 100.761 771.453 100.761H775.593C777.313 100.761 778.713 101.221 779.793 102.141C780.913 103.061 781.753 104.441 782.313 106.281L803.793 169.401C804.113 170.361 804.273 171.281 804.273 172.161C804.273 173.601 803.853 174.701 803.013 175.461C802.173 176.221 801.053 176.601 799.653 176.601C798.013 176.601 796.773 176.181 795.933 175.341C795.133 174.461 794.453 173.001 793.893 170.961L788.613 154.881H758.433L753.153 170.961C752.593 173.001 751.893 174.461 751.053 175.341C750.213 176.181 748.973 176.601 747.333 176.601ZM786.093 147.141L774.093 110.721C773.853 109.921 773.673 109.201 773.553 108.561C773.433 109.201 773.253 109.921 773.013 110.721L761.013 147.141H786.093ZM847.61 176.721C835.69 176.721 826.87 173.601 821.15 167.361C819.27 165.681 818.33 163.841 818.33 161.841C818.33 160.681 818.73 159.681 819.53 158.841C820.33 158.001 821.39 157.581 822.71 157.581C823.83 157.581 824.83 157.861 825.71 158.421C826.63 158.981 827.57 159.781 828.53 160.821C830.57 163.421 833.09 165.421 836.09 166.821C839.09 168.181 842.99 168.861 847.79 168.861C851.51 168.861 854.79 168.361 857.63 167.361C860.51 166.361 862.73 164.921 864.29 163.041C865.85 161.121 866.63 158.881 866.63 156.321C866.63 153.961 865.87 151.921 864.35 150.201C862.87 148.481 860.67 146.981 857.75 145.701C854.83 144.381 851.07 143.101 846.47 141.861C840.39 140.301 835.43 138.541 831.59 136.581C827.79 134.581 824.93 132.181 823.01 129.381C821.09 126.541 820.13 123.141 820.13 119.181C820.13 115.461 821.33 112.181 823.73 109.341C826.17 106.501 829.55 104.321 833.87 102.801C838.19 101.241 843.07 100.461 848.51 100.461C853.63 100.461 858.17 101.221 862.13 102.741C866.13 104.261 869.37 106.461 871.85 109.341C873.69 110.981 874.61 112.701 874.61 114.501C874.61 115.741 874.21 116.741 873.41 117.501C872.61 118.261 871.61 118.641 870.41 118.641C869.33 118.641 868.33 118.341 867.41 117.741C866.53 117.141 865.67 116.341 864.83 115.341C861.47 110.661 855.97 108.321 848.33 108.321C844.97 108.321 841.93 108.781 839.21 109.701C836.53 110.621 834.41 111.901 832.85 113.541C831.33 115.181 830.57 117.021 830.57 119.061C830.57 121.501 831.27 123.561 832.67 125.241C834.11 126.921 836.19 128.361 838.91 129.561C841.63 130.761 845.29 132.001 849.89 133.281C856.13 135.001 861.19 136.841 865.07 138.801C868.99 140.761 871.97 143.121 874.01 145.881C876.05 148.601 877.07 151.901 877.07 155.781C877.07 160.101 875.85 163.841 873.41 167.001C871.01 170.161 867.59 172.581 863.15 174.261C858.71 175.901 853.53 176.721 847.61 176.721ZM921.906 176.721C909.986 176.721 901.166 173.601 895.446 167.361C893.566 165.681 892.626 163.841 892.626 161.841C892.626 160.681 893.026 159.681 893.826 158.841C894.626 158.001 895.686 157.581 897.006 157.581C898.126 157.581 899.126 157.861 900.006 158.421C900.926 158.981 901.866 159.781 902.826 160.821C904.866 163.421 907.386 165.421 910.386 166.821C913.386 168.181 917.286 168.861 922.086 168.861C925.806 168.861 929.086 168.361 931.926 167.361C934.806 166.361 937.026 164.921 938.586 163.041C940.146 161.121 940.926 158.881 940.926 156.321C940.926 153.961 940.166 151.921 938.646 150.201C937.166 148.481 934.966 146.981 932.046 145.701C929.126 144.381 925.366 143.101 920.766 141.861C914.686 140.301 909.726 138.541 905.886 136.581C902.086 134.581 899.226 132.181 897.306 129.381C895.386 126.541 894.426 123.141 894.426 119.181C894.426 115.461 895.626 112.181 898.026 109.341C900.466 106.501 903.846 104.321 908.166 102.801C912.486 101.241 917.366 100.461 922.806 100.461C927.926 100.461 932.466 101.221 936.426 102.741C940.426 104.261 943.666 106.461 946.146 109.341C947.986 110.981 948.906 112.701 948.906 114.501C948.906 115.741 948.506 116.741 947.706 117.501C946.906 118.261 945.906 118.641 944.706 118.641C943.626 118.641 942.626 118.341 941.706 117.741C940.826 117.141 939.966 116.341 939.126 115.341C935.766 110.661 930.266 108.321 922.626 108.321C919.266 108.321 916.226 108.781 913.506 109.701C910.826 110.621 908.706 111.901 907.146 113.541C905.626 115.181 904.866 117.021 904.866 119.061C904.866 121.501 905.566 123.561 906.966 125.241C908.406 126.921 910.486 128.361 913.206 129.561C915.926 130.761 919.586 132.001 924.186 133.281C930.426 135.001 935.486 136.841 939.366 138.801C943.286 140.761 946.266 143.121 948.306 145.881C950.346 148.601 951.366 151.901 951.366 155.781C951.366 160.101 950.146 163.841 947.706 167.001C945.306 170.161 941.886 172.581 937.446 174.261C933.006 175.901 927.826 176.721 921.906 176.721Z" fill="currentColor"/></svg>
+    </a>
+    <ul class="nav-links" id="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#workshops">Workshops</a></li>
       <li><a href="#session">1:1 Sessions</a></li>
       <li><a href="#contact">Contact</a></li>
+      <li><a href="https://calendly.com/zsinidesign/30min" target="_blank" class="nav-cta">Book a Session</a></li>
     </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
 
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#about" onclick="closeMobile()">About</a>
+    <a href="#workshops" onclick="closeMobile()">Workshops</a>
+    <a href="#session" onclick="closeMobile()">1:1 Sessions</a>
+    <a href="#contact" onclick="closeMobile()">Contact</a>
+    <a href="https://calendly.com/zsinidesign/30min" target="_blank" class="btn btn-primary nav-cta" onclick="closeMobile()">Book a Session</a>
+  </div>
+
   <!-- HERO -->
-  <section id="hero">
+  <main id="main-content">
+  <section id="hero" aria-label="Hero">
     <div class="hero-bg"></div>
     <div class="hero-content">
       <h1>Clarity in a Noisy World</h1>
       <p>Workshops and thinking tools designed to help you navigate uncertainty, generate powerful ideas, and move forward with clarity.</p>
       <div class="btn-group">
         <a href="#workshops" class="btn btn-primary">Explore Workshops</a>
-        <a href="#session" class="btn btn-outline">Book a 1:1 Conversation</a>
+        <a href="https://calendly.com/zsinidesign/30min" target="_blank" class="btn btn-outline">Book a 1:1 Conversation</a>
       </div>
     </div>
   </section>
 
   <!-- ABOUT -->
   <section id="about">
-    <h2 class="section-title">About</h2>
-    <div class="title-line"></div>
-    <p class="about-intro">I facilitate thinking spaces where people slow down, ask better questions, and design their next steps with clarity.</p>
+    <h2 class="section-title reveal">About</h2>
+    <div class="title-line reveal"></div>
+    <p class="about-intro reveal">I facilitate thinking spaces where people slow down, ask better questions, and design their next steps with clarity.</p>
     <div class="about-grid">
-      <div class="about-col">
+      <div class="about-col reveal reveal-delay-1">
         <h4>My background combines:</h4>
         <ul>
           <li>Design thinking</li>
@@ -550,7 +289,7 @@
           <li>Human-centered strategy</li>
         </ul>
       </div>
-      <div class="about-col">
+      <div class="about-col reveal reveal-delay-2">
         <p>These workshops are not lectures. They are interactive thinking labs where participants leave with concrete insights, directions and ideas.</p>
       </div>
     </div>
@@ -558,66 +297,168 @@
 
   <!-- WORKSHOPS -->
   <section id="workshops">
-    <h2 class="section-title">Workshops</h2>
-    <div class="title-line"></div>
+    <h2 class="section-title reveal">Workshops</h2>
+    <div class="title-line reveal"></div>
     <div class="cards">
-      <div class="card">
+
+      <!-- Card 1 -->
+      <div class="card reveal reveal-delay-1">
         <div class="card-icon">💡</div>
         <h3>From Idea to Concept</h3>
-        <p>Many people have ideas but struggle to transform them into something concrete. This workshop helps participants clarify, shape and prototype an idea into a clear concept.</p>
-        <a href="#contact" class="learn-more">Learn more ↓</a>
+        <p>This workshop helps you move from "I have an idea" to "This is my next project and how it starts." Using design-thinking exercises, you clarify the real problem, define a clear concept and your concrete next steps.</p>
+        <div class="card-expand" id="expand1">
+          <div class="card-expand-inner">
+            <div class="expand-block">
+              <p class="expand-label">What you get</p>
+              <ul>
+                <li>One clearly defined project concept</li>
+                <li>A defined problem statement and target audience</li>
+                <li>A simple prototype or first step to test within two weeks</li>
+                <li>Concrete next steps so you stop staying stuck in your head</li>
+              </ul>
+            </div>
+            <div class="expand-block">
+              <p class="expand-label">Designed for</p>
+              <p class="expand-for">Freelancers, creatives and early-stage founders</p>
+            </div>
+            <a href="#contact" class="btn btn-primary" style="font-size:0.82rem;padding:0.6rem 1.2rem;">Get in touch</a>
+          </div>
+        </div>
+        <button class="learn-more" onclick="toggleCard('expand1', this)">Read more ↓</button>
       </div>
-      <div class="card">
+
+      <!-- Card 2 -->
+      <div class="card reveal reveal-delay-2">
         <div class="card-icon">⭐</div>
         <h3>Inner Leadership</h3>
-        <p>True leadership starts from within. This workshop helps participants develop self-awareness, emotional resilience and the inner clarity needed to lead with authenticity and purpose.</p>
-        <a href="#contact" class="learn-more">Learn more ↓</a>
+        <p>True leadership starts from within. This workshop helps you develop self-awareness, emotional resilience and the inner clarity needed to lead with authenticity and purpose.</p>
+        <div class="card-expand" id="expand2">
+          <div class="card-expand-inner">
+            <div class="expand-block">
+              <p class="expand-label">What participants do</p>
+              <ul>
+                <li>Explore personal leadership patterns</li>
+                <li>Identify core values and strengths</li>
+                <li>Practice self-reflection and emotional regulation</li>
+                <li>Design a personal leadership compass</li>
+              </ul>
+            </div>
+            <div class="expand-block">
+              <p class="expand-label">Outcome</p>
+              <ul>
+                <li>Deeper understanding of your leadership style</li>
+                <li>Greater self-awareness and emotional clarity</li>
+                <li>A personal leadership compass to guide decisions</li>
+                <li>Tools for leading with authenticity</li>
+              </ul>
+            </div>
+            <a href="#contact" class="btn btn-primary" style="font-size:0.82rem;padding:0.6rem 1.2rem;">Get in touch</a>
+          </div>
+        </div>
+        <button class="learn-more" onclick="toggleCard('expand2', this)">Read more ↓</button>
       </div>
-      <div class="card">
+
+      <!-- Card 3 -->
+      <div class="card reveal reveal-delay-3">
         <div class="card-icon">🤍</div>
         <h3>Wellbeing in the Chaos</h3>
-        <p>In times of uncertainty many people feel overwhelmed and mentally scattered. This workshop helps participants regain clarity, emotional balance and direction.</p>
-        <a href="#contact" class="learn-more">Learn more ↓</a>
+        <p>In times of uncertainty many people feel overwhelmed and mentally scattered. This workshop helps you regain clarity, emotional balance and a clearer sense of direction.</p>
+        <div class="card-expand" id="expand3">
+          <div class="card-expand-inner">
+            <div class="expand-block">
+              <p class="expand-label">What participants do</p>
+              <ul>
+                <li>Map their current mental landscape</li>
+                <li>Identify sources of stress and uncertainty</li>
+                <li>Reconnect with personal strengths</li>
+                <li>Design small steps to move forward</li>
+              </ul>
+            </div>
+            <div class="expand-block">
+              <p class="expand-label">Outcome</p>
+              <ul>
+                <li>Greater mental clarity and reduced overwhelm</li>
+                <li>A clearer sense of direction</li>
+                <li>Renewed connection to personal strengths</li>
+                <li>Practical tools to navigate uncertainty</li>
+              </ul>
+            </div>
+            <a href="#contact" class="btn btn-primary" style="font-size:0.82rem;padding:0.6rem 1.2rem;">Get in touch</a>
+          </div>
+        </div>
+        <button class="learn-more" onclick="toggleCard('expand3', this)">Read more ↓</button>
       </div>
+
     </div>
   </section>
+
+  <!-- MODALS -->
+  <div class="modal-overlay" id="modal1" onclick="closeModalOutside(event,'modal1')">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('modal1')">×</button>
+      <div class="modal-icon">💡</div>
+      <h3>From Idea to Concept</h3>
+      <p>A hands-on workshop guiding you through a structured process to shape, refine and prototype your idea into a clear, actionable concept.</p>
+      <ul>
+        <li>Clarify what your idea is really about</li>
+        <li>Identify your audience and their needs</li>
+        <li>Prototype a first version you can test</li>
+        <li>Leave with a concrete next step</li>
+      </ul>
+      <a href="#contact" class="btn btn-primary" onclick="closeModal('modal1')">Get in touch about this workshop</a>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal2" onclick="closeModalOutside(event,'modal2')">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('modal2')">×</button>
+      <div class="modal-icon">⭐</div>
+      <h3>Inner Leadership</h3>
+      <p>Develop self-awareness, emotional resilience and the inner clarity needed to lead with authenticity and purpose.</p>
+      <ul>
+        <li>Understand your core values and drivers</li>
+        <li>Build emotional resilience under pressure</li>
+        <li>Lead with clarity and authenticity</li>
+        <li>Develop a personal leadership practice</li>
+      </ul>
+      <a href="#contact" class="btn btn-primary" onclick="closeModal('modal2')">Get in touch about this workshop</a>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modal3" onclick="closeModalOutside(event,'modal3')">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('modal3')">×</button>
+      <div class="modal-icon">🤍</div>
+      <h3>Wellbeing in the Chaos</h3>
+      <p>Regain clarity, emotional balance and direction — even in turbulent times. A grounding workshop for when life feels scattered.</p>
+      <ul>
+        <li>Identify what is draining your energy</li>
+        <li>Rebuild emotional balance and focus</li>
+        <li>Create routines that support wellbeing</li>
+        <li>Leave with a personal clarity plan</li>
+      </ul>
+      <a href="#contact" class="btn btn-primary" onclick="closeModal('modal3')">Get in touch about this workshop</a>
+    </div>
+  </div>
 
   <!-- CTA BAND -->
   <section id="cta-band">
-    <h2>From confusion to clarity.</h2>
-    <p>These workshops are designed to help people move from:</p>
-    <div class="transforms">
-      <div class="transform-item">
-        <span class="from">Confusion</span>
-        <span class="arrow">→</span>
-        <span class="to">Clarity</span>
-      </div>
-      <div class="transform-item">
-        <span class="from">Overthinking</span>
-        <span class="arrow">→</span>
-        <span class="to">Structural thinking</span>
-      </div>
-      <div class="transform-item">
-        <span class="from">Anxiety</span>
-        <span class="arrow">→</span>
-        <span class="to">Constructive action</span>
-      </div>
-      <div class="transform-item">
-        <span class="from">Ideas</span>
-        <span class="arrow">→</span>
-        <span class="to">Tangible concepts</span>
-      </div>
+    <h2 class="reveal">From confusion to clarity.</h2>
+    <p class="reveal">These workshops are designed to help people move from:</p>
+    <div class="transforms reveal">
+      <div class="transform-item"><span class="from">Confusion</span><span class="arrow">→</span><span class="to">Clarity</span></div>
+      <div class="transform-item"><span class="from">Overthinking</span><span class="arrow">→</span><span class="to">Structural thinking</span></div>
+      <div class="transform-item"><span class="from">Anxiety</span><span class="arrow">→</span><span class="to">Constructive action</span></div>
+      <div class="transform-item"><span class="from">Ideas</span><span class="arrow">→</span><span class="to">Tangible concepts</span></div>
     </div>
-    <p class="cta-note">Participants leave with insights they can immediately apply in their work and life.</p>
+    <p class="cta-note reveal">Participants leave with insights they can immediately apply in their work and life.</p>
   </section>
 
-  <!-- 1:1 SESSION -->
+  <!-- SESSION -->
   <section id="session">
-    <h2 class="section-title">Book a 1:1 Clarity Conversation</h2>
-    <div class="title-line"></div>
-    <p class="about-intro" style="margin-bottom: 3rem;">Sometimes one conversation can unlock more clarity than weeks of thinking alone.</p>
+    <h2 class="section-title reveal">Book a 1:1 Clarity Conversation</h2>
+    <div class="title-line reveal"></div>
+    <p class="about-intro reveal" style="margin-bottom:3rem;">Sometimes one conversation can unlock more clarity than weeks of thinking alone.</p>
     <div class="session-inner">
-      <div class="session-left">
+      <div class="session-left reveal reveal-delay-1">
         <h4>In this session we explore:</h4>
         <ul class="session-points">
           <li><span class="dot"></span>Your current challenge</li>
@@ -626,78 +467,145 @@
         </ul>
         <p class="session-format">Format: 50 minute conversation</p>
       </div>
-      <div class="session-right">
+      <div class="session-right reveal reveal-delay-2">
         <div class="calendar-icon">📅</div>
-        <p style="font-size:0.85rem; color:var(--text-light); text-align:center;">Select a date and time that works for you</p>
-        <a href="#contact" class="btn btn-primary">Book a Session</a>
+        <p style="font-size:0.85rem;color:var(--text-light);text-align:center;">Select a date and time that works for you</p>
+        <!-- Replace the href with your Calendly link: https://calendly.com/YOUR-NAME -->
+        <a href="https://calendly.com/zsinidesign/30min" target="_blank" class="btn btn-primary">Book a Session</a>
       </div>
     </div>
   </section>
 
   <!-- TESTIMONIALS -->
   <section id="testimonials">
-    <h2 class="section-title">What <span style="text-decoration:underline; text-decoration-color:var(--purple);">People</span> Say</h2>
-    <div class="title-line"></div>
+    <h2 class="section-title reveal">What <span style="text-decoration:underline;text-decoration-color:var(--purple);">People</span> Say</h2>
+    <div class="title-line reveal"></div>
     <div class="testimonials-grid">
-      <div class="testimonial">
+      <div class="testimonial reveal reveal-delay-1">
         <div class="quote-icon">"</div>
-        <blockquote>Insightful and incredibly clarifying.</blockquote>
+        <blockquote>Very insightful and perfectly adapted to our needs.</blockquote>
+        <p class="testimonial-author">— Anna</p>
       </div>
-      <div class="testimonial">
+      <div class="testimonial reveal reveal-delay-2">
         <div class="quote-icon">"</div>
-        <blockquote>Helped me see my problem in a completely new way.</blockquote>
+        <blockquote>Engaging, hands-on, and full of fresh ideas.</blockquote>
+        <p class="testimonial-author">— Juli, Architect</p>
       </div>
     </div>
   </section>
 
   <!-- CONTACT -->
   <section id="contact">
-    <h2 class="section-title">Contact</h2>
-    <div class="title-line"></div>
-    <form class="contact-form" onsubmit="handleSubmit(event)">
+    <h2 class="section-title reveal">Contact</h2>
+    <div class="title-line reveal"></div>
+    <!--
+      TO RECEIVE EMAILS AT zsinidesign@gmail.com:
+      1. Go to https://web3forms.com
+      2. Enter zsinidesign@gmail.com → click "Create Access Key"
+      3. Copy the key and replace YOUR_ACCESS_KEY_HERE below
+      Messages from this form will then arrive directly in your Gmail!
+    -->
+    <form class="contact-form reveal" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="cda76d87-df1c-4f89-b217-7a239eb1b0a1" />
+      <input type="hidden" name="subject" value="New message from Bravass website" />
+      <input type="hidden" name="replyto" value="zsinidesign@gmail.com" />
+      <input type="hidden" name="redirect" value="false" />
       <div class="form-field">
-        <input type="text" placeholder="Name" required />
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Your name" required autocomplete="name" />
       </div>
       <div class="form-field">
-        <input type="email" placeholder="Email" required />
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email" />
       </div>
       <div class="form-field">
-        <textarea placeholder="Message"></textarea>
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="What's on your mind?"></textarea>
       </div>
-      <button type="submit" class="btn btn-primary">Send Message</button>
+      <button type="submit" class="btn btn-primary" id="submit-btn">Send Message</button>
     </form>
-    <div class="social-links">
-      <a href="#" title="Instagram">&#x1F4F7;</a>
-      <a href="#" title="LinkedIn">in</a>
-      <a href="#" title="Other">✦</a>
+    <div class="form-success" id="form-success">✓ Message sent! I'll get back to you soon.</div>
+
+    <div class="social-links reveal">
+      <a href="https://instagram.com/bravasspace" target="_blank" title="Follow on Instagram">IG</a>
+      <a href="/cdn-cgi/l/email-protection#403a33292e2924253329272e00272d21292c6e232f2d" title="Send an email">✉</a>
     </div>
   </section>
 
+  </main>
+
   <!-- FOOTER -->
   <footer>
-    <a href="#" class="logo">✦ Bravass</a>
+    <a href="#" class="logo" aria-label="Bravass home">
+      <svg style="height:29px;width:auto;color:#4F4F4F;opacity:0.8;" viewBox="0 0 961 287" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M172.596 0.792969C175.83 0.292322 180.948 0.447995 184.763 1.14453L185.508 1.29102C198.615 4.06613 209.703 14.6778 213.107 27.627L213.264 28.2451C213.7 30.0432 214.037 34.1389 213.999 37.3281C213.893 46.1567 211.066 53.2427 205.281 58.8799C199.48 64.5333 190.665 68.7668 178.519 71.793C161.668 75.9916 152.91 80.3275 143.766 89.0576C132.779 99.5468 122.478 120.019 118.642 138.899C113.989 161.8 116.775 187.04 126.357 208.817C138.986 237.519 166.358 261.967 197.379 272.274C204.7 274.707 210.059 276.178 215.832 277.028C221.602 277.878 227.769 278.107 236.706 278.07C248.153 278.024 250.532 277.834 257.396 276.396C281.666 271.314 301.498 260.386 318.754 242.586C328.014 233.034 333.251 225.721 338.992 214.322C344.178 204.025 347.282 195.167 349.679 183.819C351.039 177.379 351.32 175.149 351.384 166.205L351.4 161.929C351.422 150.105 351.227 147.031 350.042 140.817C347.362 126.774 340.771 110.167 333.353 98.7783C330.258 91.8398C333.901 87.165C338.942 89.4805C356.549 121.832C360.715 160.087C323.154 250.295C152.579 255.854C109.839 137.553C172.596 0.792969Z" fill="currentColor"/><path d="M488.725 136.641C504.805 154.821C504.805 175.461H458.185V107.661H475.885C502.345 119.361C488.725 136.641ZM476.005 167.661H461.905V140.781H478.225C494.485 153.981L476.005 167.661ZM477.745 133.401H461.905V108.981H475.645C492.265 120.801L477.745 133.401ZM526.062 107.661H554.682C578.562 121.041L536.202 134.721V169.761H526.062V107.661ZM536.202 134.721H553.902C568.362 121.461H536.202V134.721ZM598.739 176.601L594.179 172.161L616.199 106.281C619.499 100.761H626.999L655.199 169.401L651.059 176.601L640.019 154.881H609.839L604.559 170.961L598.739 176.601ZM637.499 147.141L624.419 110.721L612.419 147.141H637.499ZM698.836 175.881L670.036 107.781L680.116 106.281L699.436 167.481L718.876 106.281L729.316 105.321L707.956 170.241C706.756 174.001H699.976L698.836 175.881ZM747.333 176.601L742.773 172.161L764.793 106.281C768.093 100.761H775.593L803.793 169.401L799.653 176.601L788.613 154.881H758.433L753.153 170.961L747.333 176.601ZM786.093 147.141L773.013 110.721L761.013 147.141H786.093ZM847.61 176.721C821.15 167.361L818.33 161.841L825.71 158.421L847.79 168.861C864.29 163.041C866.63 156.321C857.75 145.701C831.59 136.581C820.13 119.181L848.51 100.461L871.85 109.341L874.61 114.501L864.83 115.341C830.57 119.061L849.89 133.281C877.07 155.781L847.61 176.721ZM921.906 176.721C895.446 167.361L892.626 161.841L900.006 158.421L922.086 168.861C938.586 163.041C940.926 156.321C932.046 145.701C905.886 136.581C894.426 119.181L922.806 100.461L946.146 109.341L948.906 114.501L939.126 115.341C904.866 119.061L924.186 133.281C951.366 155.781L921.906 176.721Z" fill="currentColor"/></svg>
+    </a>
     <ul class="footer-links">
-      <li><a href="#about">Home</a></li>
+      <li><a href="#about">About</a></li>
       <li><a href="#workshops">Workshops</a></li>
       <li><a href="#session">1:1 Sessions</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <span>© 2024 Bravass</span>
+    <span>© 2025 Bravass</span>
   </footer>
 
-  <script>
-    function handleSubmit(e) {
-      e.preventDefault();
-      const btn = e.target.querySelector('button');
-      btn.textContent = 'Message sent ✓';
-      btn.style.background = '#16a34a';
-      setTimeout(() => {
-        btn.textContent = 'Send Message';
-        btn.style.background = '';
-        e.target.reset();
-      }, 3000);
-    }
-  </script>
+  <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
 
-</body>
-</html>
+  <script>
+    // Hamburger
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    function closeMobile() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+
+    // Nav scroll effects
+    const navbar = document.getElementById('navbar');
+    const sections = document.querySelectorAll('section[id]');
+    const navAnchors = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+      document.getElementById('back-to-top').classList.toggle('visible', window.scrollY > 400);
+      let current = '';
+      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+      navAnchors.forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+      });
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Workshop card expand/collapse
+    function toggleCard(expandId, btn) {
+      const panel = document.getElementById(expandId);
+      const isOpen = panel.classList.contains('open');
+      panel.classList.toggle('open');
+      btn.textContent = isOpen ? 'Read more ↓' : 'Show less ↑';
+    }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow = ''; }
+    function closeModalOutside(e, id) { if (e.target === document.getElementById(id)) closeModal(id); }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => { m.classList.remove('open'); document.body.style.overflow = ''; });
+    });
+
+    // Contact form
+    document.getElementById('contact-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(this) });
+        const data = await res.json();
+        if (data.success) {
+          this.style.display = 'none';
+          document.getElementById('form-success').style.d
