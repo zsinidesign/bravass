@@ -1,507 +1,564 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bravass – Clarity in a Noisy World</title>
-  <meta name="description" content="Workshops and thinking tools designed to help you navigate uncertainty, generate powerful ideas, and move forward with clarity." />
-  <meta name="theme-color" content="#8B3FD9" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
-  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --purple: #8B3FD9; --purple-bg: #7C3AED;
-      --off-white: #F5F3EF; --warm-white: #FAFAF8;
-      --text-dark: #1a1a1a; --text-mid: #4a4a4a; --text-light: #777; --border: #e8e4dc;
-    }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--warm-white); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
-    ::selection { background: rgba(139,63,217,0.15); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bravass – Clarity in a Noisy World</title>
+<meta name="description" content="Workshops and thinking tools to navigate uncertainty, generate ideas, and move forward with clarity.">
+<meta name="theme-color" content="#8B3FD9">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --purple: #8B3FD9;
+  --purple2: #7C3AED;
+  --offwhite: #F5F3EF;
+  --warmwhite: #FAFAF8;
+  --dark: #1a1a1a;
+  --mid: #4a4a4a;
+  --light: #777;
+  --border: #e8e4dc;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--warmwhite); color: var(--dark); line-height: 1.6; overflow-x: hidden; }
+::selection { background: rgba(139,63,217,0.15); }
 
-    /* SKIP LINK */
-    .skip-link { position: absolute; top: -100px; left: 1rem; background: var(--purple); color: #fff; padding: 0.6rem 1.2rem; border-radius: 4px; font-size: 0.88rem; text-decoration: none; z-index: 9999; }
-    .skip-link:focus { top: 1rem; }
+/* ── NAV ── */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; align-items: center; justify-content: space-between; padding: 1rem 5%; background: rgba(255,255,255,0.93); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(0,0,0,0.06); transition: box-shadow 0.3s; }
+nav.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,0.08); }
+.logo { display: flex; align-items: center; text-decoration: none; transition: opacity 0.2s; }
+.logo:hover { opacity: 0.75; }
+.nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+.nav-links a { font-size: 0.88rem; color: var(--mid); text-decoration: none; letter-spacing: 0.03em; transition: color 0.2s; position: relative; padding-bottom: 2px; }
+.nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1.5px; background: var(--purple); transition: width 0.28s; }
+.nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+.nav-links a:hover, .nav-links a.active { color: var(--purple); }
+.nav-cta { background: var(--purple) !important; color: #fff !important; padding: 0.5rem 1.2rem !important; border-radius: 4px !important; transition: background 0.2s !important; }
+.nav-cta::after { display: none !important; }
+.nav-cta:hover { background: var(--purple2) !important; }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; background: none; border: none; }
+.hamburger span { display: block; width: 22px; height: 2px; background: var(--dark); border-radius: 2px; transition: all 0.3s; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-    /* NAV */
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; align-items: center; justify-content: space-between; padding: 1rem 5%; background: rgba(255,255,255,0.93); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(0,0,0,0.06); transition: box-shadow 0.3s; }
-    nav.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,0.08); }
-    .logo { display: flex; align-items: center; text-decoration: none; transition: opacity 0.2s; }
-    .logo:hover { opacity: 0.75; }
-    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
-    .nav-links a { font-size: 0.88rem; color: var(--text-mid); text-decoration: none; letter-spacing: 0.03em; transition: color 0.2s; position: relative; padding-bottom: 2px; }
-    .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1.5px; background: var(--purple); transition: width 0.28s; }
-    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
-    .nav-links a:hover, .nav-links a.active { color: var(--purple); }
-    .nav-cta { background: var(--purple) !important; color: #fff !important; padding: 0.5rem 1.2rem !important; border-radius: 4px; transition: background 0.2s !important; }
-    .nav-cta::after { display: none !important; }
-    .nav-cta:hover { background: var(--purple-bg) !important; }
+/* ── MOBILE MENU ── */
+.mobile-menu { display: none; position: fixed; top: 60px; left: 0; right: 0; background: rgba(255,255,255,0.98); backdrop-filter: blur(14px); padding: 1.5rem 5% 2rem; border-bottom: 1px solid var(--border); z-index: 199; flex-direction: column; gap: 1.2rem; }
+.mobile-menu.open { display: flex; }
+.mobile-menu a { font-size: 1rem; color: var(--mid); text-decoration: none; padding: 0.5rem 0; border-bottom: 1px solid var(--border); transition: color 0.2s; }
+.mobile-menu a:hover { color: var(--purple); }
+.mobile-menu .mob-cta { background: var(--purple); color: #fff !important; text-align: center; padding: 0.75rem !important; border-radius: 4px; border: none !important; }
 
-    /* HAMBURGER */
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; background: none; border: none; }
-    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text-dark); border-radius: 2px; transition: all 0.3s; }
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-    .mobile-menu { display: none; position: fixed; top: 60px; left: 0; right: 0; background: rgba(255,255,255,0.98); backdrop-filter: blur(14px); padding: 1.5rem 5% 2rem; border-bottom: 1px solid var(--border); z-index: 199; flex-direction: column; gap: 1.2rem; }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { font-size: 1rem; color: var(--text-mid); text-decoration: none; padding: 0.5rem 0; border-bottom: 1px solid var(--border); transition: color 0.2s; }
-    .mobile-menu a:hover { color: var(--purple); }
+/* ── REVEAL ── */
+.reveal { opacity: 1; transform: translateY(0); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.hidden { opacity: 0; transform: translateY(22px); }
+.d1 { transition-delay: 0.1s; }
+.d2 { transition-delay: 0.2s; }
+.d3 { transition-delay: 0.3s; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal.hidden { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
 
-    /* REVEAL */
-    .reveal { opacity: 1; transform: translateY(0); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.hidden { opacity: 0; transform: translateY(22px); }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    @media (prefers-reduced-motion: reduce) {
-      .reveal, .reveal.hidden { opacity: 1 !important; transform: none !important; transition: none !important; }
-    }
+/* ── HERO ── */
+#hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 0 5%; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; background: url('hero.jpg') center/cover no-repeat; filter: brightness(0.52); transform: scale(1.05); animation: heroZoom 14s ease-out forwards; }
+@keyframes heroZoom { to { transform: scale(1); } }
+.hero-content { position: relative; max-width: 680px; color: #fff; padding-top: 5rem; }
+.hero-content h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 700; line-height: 1.12; margin-bottom: 1.1rem; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s 0.2s forwards; }
+.hero-content p { font-size: 1rem; font-weight: 300; color: rgba(255,255,255,0.88); margin-bottom: 2rem; max-width: 460px; line-height: 1.75; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s 0.45s forwards; }
+.btn-group { display: flex; gap: 0.9rem; flex-wrap: wrap; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s 0.65s forwards; }
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* HERO */
-    #hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 0 5%; overflow: hidden; }
-    .hero-bg { position: absolute; inset: 0; background: url('hero.jpg') center/cover no-repeat; filter: brightness(0.52); transform: scale(1.05); animation: heroZoom 14s ease-out forwards; }
-    @keyframes heroZoom { to { transform: scale(1); } }
-    .hero-content { position: relative; max-width: 680px; color: #fff; padding-top: 5rem; }
-    .hero-content h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 700; line-height: 1.12; margin-bottom: 1.1rem; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s 0.2s forwards; }
-    .hero-content p { font-size: 1rem; font-weight: 300; color: rgba(255,255,255,0.88); margin-bottom: 2rem; max-width: 460px; line-height: 1.75; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s 0.45s forwards; }
-    .btn-group { display: flex; gap: 0.9rem; flex-wrap: wrap; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s 0.65s forwards; }
-    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+/* ── BUTTONS ── */
+.btn { display: inline-block; padding: 0.8rem 1.7rem; border-radius: 4px; font-size: 0.88rem; font-weight: 500; letter-spacing: 0.04em; text-decoration: none; cursor: pointer; border: none; font-family: 'Plus Jakarta Sans', sans-serif; transition: transform 0.18s, box-shadow 0.18s, background 0.2s; }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+.btn:active { transform: scale(0.98); }
+.btn-primary { background: var(--purple); color: #fff; }
+.btn-primary:hover { background: var(--purple2); }
+.btn-outline { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,0.75); }
 
-    /* BUTTONS */
-    .btn { display: inline-block; padding: 0.8rem 1.7rem; border-radius: 4px; font-size: 0.88rem; font-weight: 500; letter-spacing: 0.04em; text-decoration: none; cursor: pointer; border: none; transition: transform 0.18s, box-shadow 0.18s, background 0.2s; font-family: 'DM Sans', sans-serif; }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
-    .btn:active { transform: scale(0.98); }
-    .btn-primary { background: var(--purple); color: #fff; }
-    .btn-primary:hover { background: var(--purple-bg); }
-    .btn-outline { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,0.75); }
+/* ── SECTIONS ── */
+section { padding: 5.5rem 5%; }
+.section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 600; text-align: center; margin-bottom: 0.6rem; }
+.title-line { width: 36px; height: 2px; background: var(--purple); margin: 0 auto 2.5rem; border-radius: 99px; }
 
-    /* SECTIONS */
-    section { padding: 5.5rem 5%; }
-    h2.section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 600; text-align: center; margin-bottom: 0.6rem; }
-    .title-line { width: 36px; height: 2px; background: var(--purple); margin: 0 auto 2.5rem; border-radius: 99px; }
+/* ── ABOUT ── */
+#about { background: var(--offwhite); }
+.about-intro { text-align: center; max-width: 560px; margin: 0 auto 3rem; font-size: 1.02rem; color: var(--mid); line-height: 1.8; }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem 4rem; max-width: 800px; margin: 0 auto; }
+.about-col h4 { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.9rem; }
+.about-col ul { list-style: none; }
+.about-col li { font-size: 0.92rem; color: var(--mid); padding: 0.28rem 0; display: flex; align-items: center; gap: 0.6rem; }
+.about-col li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--purple); flex-shrink: 0; }
+.about-col p { font-size: 0.95rem; color: var(--mid); line-height: 1.8; font-style: italic; }
 
-    /* ABOUT */
-    #about { background: var(--off-white); }
-    .about-intro { text-align: center; max-width: 560px; margin: 0 auto 3rem; font-size: 1.02rem; color: var(--text-mid); line-height: 1.8; }
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem 4rem; max-width: 800px; margin: 0 auto; }
-    .about-col h4 { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.9rem; }
-    .about-col ul { list-style: none; }
-    .about-col ul li { font-size: 0.92rem; color: var(--text-mid); padding: 0.28rem 0; display: flex; align-items: center; gap: 0.6rem; }
-    .about-col ul li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--purple); flex-shrink: 0; }
-    .about-col p { font-size: 0.95rem; color: var(--text-mid); line-height: 1.8; font-style: italic; }
+/* ── WORKSHOPS ── */
+#workshops { background: var(--warmwhite); }
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 960px; margin: 0 auto; align-items: stretch; }
+.card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 2rem; display: flex; flex-direction: column; transition: box-shadow 0.3s, transform 0.3s; }
+.card:hover { box-shadow: 0 10px 36px rgba(139,63,217,0.1); transform: translateY(-3px); }
+.card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+.card-icon { width: 44px; height: 44px; min-width: 44px; border-radius: 10px; background: #f3ebff; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+.card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; line-height: 1.25; margin: 0; }
+.card-body { font-size: 0.88rem; color: var(--mid); line-height: 1.75; margin-bottom: 0.75rem; }
+.card-preview-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dark); margin-bottom: 0.4rem; }
+.card-preview-list { list-style: none; margin-bottom: 1rem; flex-grow: 1; }
+.card-preview-list li { font-size: 0.86rem; color: var(--mid); padding: 0.2rem 0 0.2rem 1rem; position: relative; line-height: 1.55; }
+.card-preview-list li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 5px; height: 5px; border-radius: 50%; background: var(--purple); }
+.read-more-btn { font-size: 0.82rem; color: var(--purple); background: none; border: none; cursor: pointer; padding: 0.3rem 0 0; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500; display: flex; align-items: center; gap: 0.35rem; margin-top: auto; width: 100%; transition: color 0.2s; }
+.read-more-btn:hover { color: var(--purple2); }
 
-    /* WORKSHOPS */
-    #workshops { background: var(--warm-white); }
-    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 960px; margin: 0 auto; align-items: stretch; }
-    .card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 2rem; display: flex; flex-direction: column; transition: box-shadow 0.3s, transform 0.3s; }
-    .card:hover { box-shadow: 0 10px 36px rgba(139,63,217,0.1); transform: translateY(-3px); }
-    .card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
-    .card-icon { width: 44px; height: 44px; min-width: 44px; border-radius: 10px; background: #f3ebff; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-    .card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; line-height: 1.25; margin: 0; }
-    .card-body { font-size: 0.88rem; color: var(--text-mid); line-height: 1.75; flex-grow: 1; margin-bottom: 1rem; }
-    .read-btn { font-size: 0.82rem; color: var(--purple); background: none; border: none; cursor: pointer; padding: 0; font-family: 'DM Sans', sans-serif; font-weight: 500; display: flex; align-items: center; gap: 0.35rem; margin-top: auto; }
-    .read-btn:hover { color: var(--purple-bg); }
-    .card-details { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
-    .detail-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dark); margin: 0.75rem 0 0.4rem; }
-    .detail-label:first-child { margin-top: 0; }
-    .detail-list { list-style: none; margin-bottom: 0.5rem; }
-    .detail-list li { font-size: 0.86rem; color: var(--text-mid); padding: 0.22rem 0 0.22rem 1rem; position: relative; line-height: 1.55; }
-    .detail-list li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 5px; height: 5px; border-radius: 50%; background: var(--purple); }
-    .detail-for { font-size: 0.88rem; color: var(--text-mid); font-style: italic; margin-bottom: 1rem; }
-    .detail-cta { display: block; background: var(--purple); color: #fff; text-align: center; padding: 0.6rem 1.2rem; border-radius: 4px; text-decoration: none; font-size: 0.82rem; margin-top: 0.75rem; transition: background 0.2s; }
-    .detail-cta:hover { background: var(--purple-bg); }
+/* ── CARD DETAILS (hidden by default via inline style) ── */
+.card-details { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.detail-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dark); margin: 0.8rem 0 0.4rem; }
+.detail-label:first-child { margin-top: 0; }
+.detail-list { list-style: none; margin-bottom: 0.4rem; }
+.detail-list li { font-size: 0.86rem; color: var(--mid); padding: 0.2rem 0 0.2rem 1rem; position: relative; line-height: 1.55; }
+.detail-list li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 5px; height: 5px; border-radius: 50%; background: var(--purple); }
+.detail-for { font-size: 0.88rem; color: var(--mid); font-style: italic; margin-bottom: 1rem; }
+.detail-cta { display: block; background: var(--purple); color: #fff; text-align: center; padding: 0.6rem 1.2rem; border-radius: 4px; text-decoration: none; font-size: 0.82rem; margin-top: 0.75rem; transition: background 0.2s; }
+.detail-cta:hover { background: var(--purple2); }
 
-    /* CTA BAND */
-    #cta-band { background: var(--purple-bg); color: #fff; text-align: center; padding: 5rem 5%; }
-    #cta-band h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 600; margin-bottom: 0.75rem; }
-    #cta-band > p { font-size: 0.95rem; color: rgba(255,255,255,0.8); margin-bottom: 2.5rem; }
-    .transforms { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem 3rem; max-width: 680px; margin: 0 auto 2rem; }
-    .transform-item { display: flex; align-items: center; gap: 0.75rem; font-size: 0.95rem; }
-    .t-from { color: rgba(255,255,255,0.65); font-style: italic; min-width: 120px; }
-    .t-arrow { color: rgba(255,255,255,0.5); }
-    .t-to { color: #fff; font-weight: 600; }
-    .cta-note { font-size: 0.82rem; color: rgba(255,255,255,0.6); margin-top: 1.5rem; }
+/* ── CTA BAND ── */
+#cta-band { background: var(--purple2); color: #fff; text-align: center; padding: 5rem 5%; }
+#cta-band h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 600; margin-bottom: 0.75rem; }
+#cta-band > p { font-size: 0.95rem; color: rgba(255,255,255,0.8); margin-bottom: 2.5rem; }
+.transforms { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem 3rem; max-width: 680px; margin: 0 auto 2rem; }
+.transform-item { display: flex; align-items: center; gap: 0.75rem; font-size: 0.95rem; }
+.t-from { color: rgba(255,255,255,0.65); font-style: italic; min-width: 120px; }
+.t-arrow { color: rgba(255,255,255,0.5); }
+.t-to { color: #fff; font-weight: 600; }
+.cta-note { font-size: 0.82rem; color: rgba(255,255,255,0.6); margin-top: 1.5rem; }
 
-    /* SESSION */
-    #session { background: var(--off-white); }
-    .session-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.6fr; gap: 3rem 4rem; align-items: start; }
-    .session-left h4 { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
-    .session-points { list-style: none; margin-bottom: 1.25rem; }
-    .session-points li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.92rem; color: var(--text-mid); padding: 0.32rem 0; }
-    .dot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--purple); flex-shrink: 0; margin-top: 2px; }
-    .session-format { font-size: 0.8rem; color: var(--text-light); letter-spacing: 0.04em; }
-    .calendly-inline-widget { width: 100% !important; height: 650px !important; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: #fff; }
+/* ── SESSION ── */
+#session { background: var(--offwhite); }
+.session-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.6fr; gap: 3rem 4rem; align-items: start; }
+.session-left h4 { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
+.session-points { list-style: none; margin-bottom: 1.25rem; }
+.session-points li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.92rem; color: var(--mid); padding: 0.32rem 0; }
+.dot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--purple); flex-shrink: 0; margin-top: 2px; }
+.session-format { font-size: 0.8rem; color: var(--light); letter-spacing: 0.04em; }
+.calendly-inline-widget { width: 100% !important; height: 650px !important; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: #fff; }
 
-    /* TESTIMONIALS */
-    #testimonials { background: var(--warm-white); }
-    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 780px; margin: 0 auto; }
-    .testimonial { background: var(--off-white); border: 1px solid var(--border); border-radius: 10px; padding: 2rem; text-align: center; transition: transform 0.3s, box-shadow 0.3s; }
-    .testimonial:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.07); }
-    .quote-icon { font-size: 2.2rem; color: #A855F7; margin-bottom: 0.75rem; line-height: 1; opacity: 0.6; font-family: 'Playfair Display', serif; }
-    .testimonial blockquote { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; line-height: 1.7; }
-    .testimonial-author { margin-top: 1rem; font-size: 0.8rem; color: var(--text-light); letter-spacing: 0.05em; }
+/* ── TESTIMONIALS ── */
+#testimonials { background: var(--warmwhite); }
+.testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 780px; margin: 0 auto; }
+.testimonial { background: var(--offwhite); border: 1px solid var(--border); border-radius: 10px; padding: 2rem; text-align: center; transition: transform 0.3s, box-shadow 0.3s; }
+.testimonial:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.07); }
+.quote-icon { font-size: 2.2rem; color: #A855F7; margin-bottom: 0.75rem; line-height: 1; opacity: 0.6; font-family: 'Playfair Display', serif; }
+.testimonial blockquote { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; line-height: 1.7; }
+.testimonial-author { margin-top: 1rem; font-size: 0.8rem; color: var(--light); letter-spacing: 0.05em; }
 
-    /* CONTACT */
-    #contact { background: var(--off-white); }
-    .contact-form { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
-    .form-field { display: flex; flex-direction: column; gap: 0.3rem; }
-    .form-field label { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.05em; color: var(--text-mid); }
-    .form-field input, .form-field textarea { padding: 0.8rem 1rem; border: 1.5px solid var(--border); border-radius: 6px; background: #fff; font-family: 'DM Sans', sans-serif; font-size: 0.92rem; color: var(--text-dark); transition: border-color 0.2s, box-shadow 0.2s; outline: none; }
-    .form-field input::placeholder, .form-field textarea::placeholder { color: #bbb; }
-    .form-field input:focus, .form-field textarea:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(139,63,217,0.12); }
-    .form-field textarea { min-height: 120px; resize: vertical; }
-    .contact-form .btn-primary { align-self: stretch; text-align: center; padding: 0.95rem; }
-    .form-success { display: none; text-align: center; padding: 2rem; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; color: #16a34a; max-width: 480px; margin: 0 auto; }
-    .social-links { display: flex; justify-content: center; gap: 1.2rem; margin-top: 2.5rem; }
-    .social-links a { width: 42px; height: 42px; border: 1.5px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-mid); text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: border-color 0.2s, color 0.2s, transform 0.2s; }
-    .social-links a:hover { border-color: var(--purple); color: var(--purple); transform: translateY(-3px); }
+/* ── CONTACT ── */
+#contact { background: var(--offwhite); }
+.contact-form { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+.form-field { display: flex; flex-direction: column; gap: 0.3rem; }
+.form-field label { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.05em; color: var(--mid); }
+.form-field input, .form-field textarea { padding: 0.8rem 1rem; border: 1.5px solid var(--border); border-radius: 6px; background: #fff; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.92rem; color: var(--dark); transition: border-color 0.2s, box-shadow 0.2s; outline: none; }
+.form-field input::placeholder, .form-field textarea::placeholder { color: #bbb; }
+.form-field input:focus, .form-field textarea:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(139,63,217,0.12); }
+.form-field textarea { min-height: 120px; resize: vertical; }
+.contact-form .btn-primary { align-self: stretch; text-align: center; padding: 0.95rem; }
+.form-success { display: none; text-align: center; padding: 2rem; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; color: #16a34a; max-width: 480px; margin: 0 auto; }
+.social-links { display: flex; justify-content: center; gap: 1.2rem; margin-top: 2.5rem; }
+.social-links a { width: 42px; height: 42px; border: 1.5px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--mid); text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: border-color 0.2s, color 0.2s, transform 0.2s; }
+.social-links a:hover { border-color: var(--purple); color: var(--purple); transform: translateY(-3px); }
 
-    /* FOOTER */
-    footer { background: var(--off-white); border-top: 1px solid var(--border); padding: 1.75rem 5%; display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; color: var(--text-light); }
-    .footer-links { display: flex; gap: 1.5rem; list-style: none; }
-    .footer-links a { color: var(--text-light); text-decoration: none; transition: color 0.2s; }
-    .footer-links a:hover { color: var(--purple); }
+/* ── FOOTER ── */
+footer { background: var(--offwhite); border-top: 1px solid var(--border); padding: 1.75rem 5%; display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; color: var(--light); }
+.footer-links { display: flex; gap: 1.5rem; list-style: none; }
+.footer-links a { color: var(--light); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--purple); }
 
-    /* BACK TO TOP */
-    #back-to-top { position: fixed; bottom: 2rem; right: 2rem; width: 44px; height: 44px; background: var(--purple); color: #fff; border: none; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(12px); transition: opacity 0.3s, transform 0.3s, background 0.2s; z-index: 100; box-shadow: 0 4px 16px rgba(139,63,217,0.35); }
-    #back-to-top.visible { opacity: 1; transform: translateY(0); }
-    #back-to-top:hover { background: var(--purple-bg); transform: translateY(-2px); }
+/* ── BACK TO TOP ── */
+#back-to-top { position: fixed; bottom: 2rem; right: 2rem; width: 44px; height: 44px; background: var(--purple); color: #fff; border: none; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(12px); transition: opacity 0.3s, transform 0.3s, background 0.2s; z-index: 100; box-shadow: 0 4px 16px rgba(139,63,217,0.35); }
+#back-to-top.visible { opacity: 1; transform: translateY(0); }
+#back-to-top:hover { background: var(--purple2); transform: translateY(-2px); }
 
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .hamburger { display: flex; }
-      .about-grid, .session-inner { grid-template-columns: 1fr; gap: 2rem; }
-      .cards { grid-template-columns: 1fr; }
-      .transforms { grid-template-columns: 1fr; }
-      footer { flex-direction: column; gap: 0.75rem; text-align: center; }
-      .footer-links { flex-wrap: wrap; justify-content: center; }
-      .calendly-inline-widget { height: 580px !important; }
-    }
-  </style>
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .session-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .cards { grid-template-columns: 1fr; }
+  .transforms { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+  .footer-links { flex-wrap: wrap; justify-content: center; }
+  .calendly-inline-widget { height: 580px !important; }
+}
+</style>
 </head>
 <body>
-  <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <!-- NAV -->
-  <nav id="navbar">
-    <a href="#" class="logo" aria-label="Bravass home">
-      <img src="bravass.svg" alt="Bravass" style="height:36px;width:auto;" />
-    </a>
-    <ul class="nav-links" id="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#workshops">Workshops</a></li>
-      <li><a href="#session">1:1 Sessions</a></li>
-      <li><a href="#contact">Contact</a></li>
-      <li><a href="https://calendly.com/zsinidesign/30min" target="_blank" class="nav-cta">Book a Session</a></li>
-    </ul>
-    <button class="hamburger" id="hamburger" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="logo" aria-label="Bravass">
+    <img src="bravass.svg" alt="Bravass" style="height:36px;width:auto;">
+  </a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#workshops">Workshops</a></li>
+    <li><a href="#session">1:1 Sessions</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://calendly.com/zsinidesign/30min" target="_blank" class="nav-cta">Book a Session</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
-  <!-- MOBILE MENU -->
-  <div class="mobile-menu" id="mobile-menu">
-    <a href="#about" onclick="closeMobile()">About</a>
-    <a href="#workshops" onclick="closeMobile()">Workshops</a>
-    <a href="#session" onclick="closeMobile()">1:1 Sessions</a>
-    <a href="#contact" onclick="closeMobile()">Contact</a>
-    <a href="https://calendly.com/zsinidesign/30min" target="_blank" onclick="closeMobile()" style="background:var(--purple);color:#fff;text-align:center;padding:0.75rem;border-radius:4px;border:none;">Book a Session</a>
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#about" onclick="closeMobileMenu()">About</a>
+  <a href="#workshops" onclick="closeMobileMenu()">Workshops</a>
+  <a href="#session" onclick="closeMobileMenu()">1:1 Sessions</a>
+  <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+  <a href="https://calendly.com/zsinidesign/30min" target="_blank" class="mob-cta" onclick="closeMobileMenu()">Book a Session</a>
+</div>
+
+<main>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <h1>Clarity in a Noisy World</h1>
+    <p>Workshops and thinking tools designed to help you navigate uncertainty, generate powerful ideas, and move forward with clarity.</p>
+    <div class="btn-group">
+      <a href="#workshops" class="btn btn-primary">Explore Workshops</a>
+      <a href="https://calendly.com/zsinidesign/30min" target="_blank" class="btn btn-outline">Book a 1:1 Conversation</a>
+    </div>
   </div>
+</section>
 
-  <main id="main-content">
-
-  <!-- HERO -->
-  <section id="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-content">
-      <h1>Clarity in a Noisy World</h1>
-      <p>Workshops and thinking tools designed to help you navigate uncertainty, generate powerful ideas, and move forward with clarity.</p>
-      <div class="btn-group">
-        <a href="#workshops" class="btn btn-primary">Explore Workshops</a>
-        <a href="https://calendly.com/zsinidesign/30min" target="_blank" class="btn btn-outline">Book a 1:1 Conversation</a>
-      </div>
+<!-- ABOUT -->
+<section id="about">
+  <h2 class="section-title reveal">About</h2>
+  <div class="title-line reveal"></div>
+  <p class="about-intro reveal">I facilitate thinking spaces where people slow down, ask better questions, and design their next steps with clarity.</p>
+  <div class="about-grid">
+    <div class="about-col reveal d1">
+      <h4>My background combines:</h4>
+      <ul>
+        <li>Design thinking</li>
+        <li>Creative facilitation</li>
+        <li>Research</li>
+        <li>Human-centered strategy</li>
+      </ul>
     </div>
-  </section>
+    <div class="about-col reveal d2">
+      <p>These workshops are not lectures. They are interactive thinking labs where participants leave with concrete insights, directions and ideas.</p>
+    </div>
+  </div>
+</section>
 
-  <!-- ABOUT -->
-  <section id="about">
-    <h2 class="section-title reveal">About</h2>
-    <div class="title-line reveal"></div>
-    <p class="about-intro reveal">I facilitate thinking spaces where people slow down, ask better questions, and design their next steps with clarity.</p>
-    <div class="about-grid">
-      <div class="about-col reveal reveal-delay-1">
-        <h4>My background combines:</h4>
-        <ul>
-          <li>Design thinking</li>
-          <li>Creative facilitation</li>
-          <li>Research</li>
-          <li>Human-centered strategy</li>
+<!-- WORKSHOPS -->
+<section id="workshops">
+  <h2 class="section-title reveal">Workshops</h2>
+  <div class="title-line reveal"></div>
+  <div class="cards">
+
+    <!-- Card 1 -->
+    <div class="card reveal d1">
+      <div class="card-header">
+        <div class="card-icon">💡</div>
+        <h3>From Idea to Concept</h3>
+      </div>
+      <p class="card-body">This workshop helps you move from "I have an idea" to "This is my next project and how it starts." We clarify the idea, define the problem worth solving, and use simple design-thinking tools to shape it into a clear concept and a simple prototype you can test.</p>
+      <p class="card-preview-label">What participants do</p>
+      <ul class="card-preview-list">
+        <li>Identify the problem worth solving</li>
+        <li>Define the core concept</li>
+        <li>Create a simple prototype worth testing</li>
+      </ul>
+      <button class="read-more-btn" id="card-btn-1" onclick="toggleWorkshops()">Read more ↓</button>
+      <div class="card-details" id="card-det-1" style="display:none;">
+        <p class="detail-label">Outcome</p>
+        <ul class="detail-list">
+          <li>A clear idea concept</li>
+          <li>A simple, testable prototype</li>
+          <li>A concrete next step for development</li>
+          <li>Confidence to move from thinking to doing</li>
         </ul>
-      </div>
-      <div class="about-col reveal reveal-delay-2">
-        <p>These workshops are not lectures. They are interactive thinking labs where participants leave with concrete insights, directions and ideas.</p>
+        <p class="detail-label">Perfect for</p>
+        <p class="detail-for">Creatives, solopreneurs, and professionals exploring new projects</p>
+        <a href="#contact" class="detail-cta">Get in touch</a>
       </div>
     </div>
-  </section>
 
-  <!-- WORKSHOPS -->
-  <section id="workshops">
-    <h2 class="section-title reveal">Workshops</h2>
-    <div class="title-line reveal"></div>
-    <div class="cards">
-
-      <div class="card reveal reveal-delay-1">
-        <div class="card-header">
-          <div class="card-icon">💡</div>
-          <h3>From Idea to Concept</h3>
-        </div>
-        <p class="card-body">This workshop helps you move from "I have an idea" to "This is my next project and how it starts." We clarify the idea, define the problem worth solving, and use simple design-thinking tools to shape it into a clear concept and a simple prototype you can test.</p>
-        <button class="read-btn" id="btn1" onclick="workshopToggle()">Read more ↓</button>
-        <div class="card-details" id="details1" style="display:none;">
-          <p class="detail-label">What participants do</p>
-          <ul class="detail-list">
-            <li>Identify the problem worth solving</li>
-            <li>Define the core concept</li>
-            <li>Create a simple prototype worth testing</li>
-          </ul>
-          <p class="detail-label">Outcome</p>
-          <ul class="detail-list">
-            <li>A clear idea concept</li>
-            <li>A simple, testable prototype</li>
-            <li>A concrete next step for development</li>
-            <li>Confidence to move from thinking to doing</li>
-          </ul>
-          <p class="detail-label">Perfect for</p>
-          <p class="detail-for">Creatives, solopreneurs, and professionals exploring new projects</p>
-          <a href="#contact" class="detail-cta">Get in touch</a>
-        </div>
+    <!-- Card 2 -->
+    <div class="card reveal d2">
+      <div class="card-header">
+        <div class="card-icon">⭐</div>
+        <h3>Inner Leadership</h3>
       </div>
-
-      <div class="card reveal reveal-delay-2">
-        <div class="card-header">
-          <div class="card-icon">⭐</div>
-          <h3>Inner Leadership</h3>
-        </div>
-        <p class="card-body">True leadership starts from within. This workshop helps you develop self-awareness, emotional resilience, and the inner clarity needed to lead with authenticity and purpose — especially in uncertain times.</p>
-        <button class="read-btn" id="btn2" onclick="workshopToggle()">Read more ↓</button>
-        <div class="card-details" id="details2" style="display:none;">
-          <p class="detail-label">What participants do</p>
-          <ul class="detail-list">
-            <li>Explore personal leadership and behaviour patterns</li>
-            <li>Identify core values and strengths</li>
-            <li>Practice self-reflection and emotional regulation</li>
-          </ul>
-          <p class="detail-label">Outcome</p>
-          <ul class="detail-list">
-            <li>Greater self-awareness and emotional clarity</li>
-            <li>A personal leadership compass to guide your decisions and boundaries</li>
-            <li>A 3-step framework to act with purpose, even when things feel unclear</li>
-            <li>More confidence to lead yourself before leading others</li>
-          </ul>
-          <p class="detail-label">Perfect for</p>
-          <p class="detail-for">Professionals who want to lead with authenticity and less burnout</p>
-          <a href="#contact" class="detail-cta">Get in touch</a>
-        </div>
-      </div>
-
-      <div class="card reveal reveal-delay-3">
-        <div class="card-header">
-          <div class="card-icon">🤍</div>
-          <h3>Wellbeing in the Chaos</h3>
-        </div>
-        <p class="card-body">In times of uncertainty it's easy to feel overwhelmed and mentally scattered. This workshop helps you regain clarity, emotional balance, and a clearer sense of direction so you can move forward with intention instead of reaction.</p>
-        <button class="read-btn" id="btn3" onclick="workshopToggle()">Read more ↓</button>
-        <div class="card-details" id="details3" style="display:none;">
-          <p class="detail-label">What participants do</p>
-          <ul class="detail-list">
-            <li>Map your current mental and emotional landscape</li>
-            <li>Reconnect with your personal strengths and internal resources</li>
-            <li>Design small, realistic steps to move forward in your life or work</li>
-          </ul>
-          <p class="detail-label">Outcome</p>
-          <ul class="detail-list">
-            <li>Greater mental clarity and reduced feeling of overwhelm</li>
-            <li>A renewed connection to your personal strengths and how to use them</li>
-            <li>Practical tools and mini-rituals to navigate uncertainty</li>
-            <li>A short, doable action plan for the next 2–4 weeks</li>
-          </ul>
-          <p class="detail-label">Perfect for</p>
-          <p class="detail-for">Navigating change, transitions, or complex life phases</p>
-          <a href="#contact" class="detail-cta">Get in touch</a>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- CTA BAND -->
-  <section id="cta-band">
-    <h2 class="reveal">From confusion to clarity.</h2>
-    <p class="reveal">These workshops are designed to help people move from:</p>
-    <div class="transforms reveal">
-      <div class="transform-item"><span class="t-from">Confusion</span><span class="t-arrow">→</span><span class="t-to">Clarity</span></div>
-      <div class="transform-item"><span class="t-from">Overthinking</span><span class="t-arrow">→</span><span class="t-to">Structural thinking</span></div>
-      <div class="transform-item"><span class="t-from">Anxiety</span><span class="t-arrow">→</span><span class="t-to">Constructive action</span></div>
-      <div class="transform-item"><span class="t-from">Ideas</span><span class="t-arrow">→</span><span class="t-to">Tangible concepts</span></div>
-    </div>
-    <p class="cta-note reveal">Participants leave with insights they can immediately apply in their work and life.</p>
-  </section>
-
-  <!-- SESSION -->
-  <section id="session">
-    <h2 class="section-title reveal">Book a 1:1 Clarity Conversation</h2>
-    <div class="title-line reveal"></div>
-    <p class="about-intro reveal" style="margin-bottom:3rem;">Sometimes one conversation can unlock more clarity than weeks of thinking alone.</p>
-    <div class="session-inner">
-      <div class="session-left reveal reveal-delay-1">
-        <h4>In this session we explore:</h4>
-        <ul class="session-points">
-          <li><span class="dot"></span>Your current challenge</li>
-          <li><span class="dot"></span>What might be blocking progress</li>
-          <li><span class="dot"></span>Possible next steps</li>
+      <p class="card-body">True leadership starts from within. This workshop helps you develop self-awareness, emotional resilience, and the inner clarity needed to lead with authenticity and purpose — especially in uncertain times.</p>
+      <p class="card-preview-label">What participants do</p>
+      <ul class="card-preview-list">
+        <li>Explore personal leadership and behaviour patterns</li>
+        <li>Identify core values and strengths</li>
+        <li>Practice self-reflection and emotional regulation</li>
+      </ul>
+      <button class="read-more-btn" id="card-btn-2" onclick="toggleWorkshops()">Read more ↓</button>
+      <div class="card-details" id="card-det-2" style="display:none;">
+        <p class="detail-label">Outcome</p>
+        <ul class="detail-list">
+          <li>Greater self-awareness and emotional clarity</li>
+          <li>A personal leadership compass to guide your decisions and boundaries</li>
+          <li>A 3-step framework to act with purpose, even when things feel unclear</li>
+          <li>More confidence to lead yourself before leading others</li>
         </ul>
-        <p class="session-format">Format: 30 minute conversation</p>
-      </div>
-      <div class="reveal reveal-delay-2">
-        <div class="calendly-inline-widget" data-url="https://calendly.com/zsinidesign/30min?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=8B3FD9"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section id="testimonials">
-    <h2 class="section-title reveal">What <span style="text-decoration:underline;text-decoration-color:var(--purple);">People</span> Say</h2>
-    <div class="title-line reveal"></div>
-    <div class="testimonials-grid">
-      <div class="testimonial reveal reveal-delay-1">
-        <div class="quote-icon">"</div>
-        <blockquote>Very insightful and perfectly adapted to our needs.</blockquote>
-        <p class="testimonial-author">— Anna</p>
-      </div>
-      <div class="testimonial reveal reveal-delay-2">
-        <div class="quote-icon">"</div>
-        <blockquote>Engaging, hands-on, and full of fresh ideas.</blockquote>
-        <p class="testimonial-author">— Juli, Architect</p>
+        <p class="detail-label">Perfect for</p>
+        <p class="detail-for">Professionals who want to lead with authenticity and less burnout</p>
+        <a href="#contact" class="detail-cta">Get in touch</a>
       </div>
     </div>
-  </section>
 
-  <!-- CONTACT -->
-  <section id="contact">
-    <h2 class="section-title reveal">Contact</h2>
-    <div class="title-line reveal"></div>
-    <form class="contact-form reveal" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
-      <input type="hidden" name="access_key" value="cda76d87-df1c-4f89-b217-7a239eb1b0a1" />
-      <input type="hidden" name="subject" value="New message from Bravass website" />
-      <input type="hidden" name="replyto" value="zsinidesign@gmail.com" />
-      <input type="hidden" name="redirect" value="false" />
-      <div class="form-field">
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" placeholder="Your name" required autocomplete="name" />
+    <!-- Card 3 -->
+    <div class="card reveal d3">
+      <div class="card-header">
+        <div class="card-icon">🤍</div>
+        <h3>Wellbeing in the Chaos</h3>
       </div>
-      <div class="form-field">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email" />
+      <p class="card-body">In times of uncertainty it's easy to feel overwhelmed and mentally scattered. This workshop helps you regain clarity, emotional balance, and a clearer sense of direction so you can move forward with intention instead of reaction.</p>
+      <p class="card-preview-label">What participants do</p>
+      <ul class="card-preview-list">
+        <li>Map your current mental and emotional landscape</li>
+        <li>Reconnect with your personal strengths and internal resources</li>
+        <li>Design small, realistic steps to move forward</li>
+      </ul>
+      <button class="read-more-btn" id="card-btn-3" onclick="toggleWorkshops()">Read more ↓</button>
+      <div class="card-details" id="card-det-3" style="display:none;">
+        <p class="detail-label">Outcome</p>
+        <ul class="detail-list">
+          <li>Greater mental clarity and reduced feeling of overwhelm</li>
+          <li>A renewed connection to your personal strengths and how to use them</li>
+          <li>Practical tools and mini-rituals to navigate uncertainty</li>
+          <li>A short, doable action plan for the next 2–4 weeks</li>
+        </ul>
+        <p class="detail-label">Perfect for</p>
+        <p class="detail-for">Navigating change, transitions, or complex life phases</p>
+        <a href="#contact" class="detail-cta">Get in touch</a>
       </div>
-      <div class="form-field">
-        <label for="message">Message</label>
-        <textarea id="message" name="message" placeholder="What's on your mind?"></textarea>
-      </div>
-      <button type="submit" class="btn btn-primary" id="submit-btn">Send Message</button>
-    </form>
-    <div class="form-success" id="form-success">✓ Message sent! I'll get back to you soon.</div>
-    <div class="social-links reveal">
-      <a href="https://instagram.com/bravasspace" target="_blank" aria-label="Instagram">IG</a>
-      <a href="/cdn-cgi/l/email-protection#b2c8c1dbdcdbd6d7c1dbd5dcf2d5dfd3dbde9cd1dddf" aria-label="Email">✉</a>
     </div>
-  </section>
 
-  </main>
+  </div>
+</section>
 
-  <!-- FOOTER -->
-  <footer>
-    <a href="#" class="logo" aria-label="Bravass home">
-      <img src="bravass.svg" alt="Bravass" style="height:28px;width:auto;opacity:0.75;" />
-    </a>
-    <ul class="footer-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#workshops">Workshops</a></li>
-      <li><a href="#session">1:1 Sessions</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <span>© 2025 Bravass</span>
-  </footer>
+<!-- CTA BAND -->
+<section id="cta-band">
+  <h2 class="reveal">From confusion to clarity.</h2>
+  <p class="reveal">These workshops are designed to help people move from:</p>
+  <div class="transforms reveal">
+    <div class="transform-item"><span class="t-from">Confusion</span><span class="t-arrow">→</span><span class="t-to">Clarity</span></div>
+    <div class="transform-item"><span class="t-from">Overthinking</span><span class="t-arrow">→</span><span class="t-to">Structural thinking</span></div>
+    <div class="transform-item"><span class="t-from">Anxiety</span><span class="t-arrow">→</span><span class="t-to">Constructive action</span></div>
+    <div class="transform-item"><span class="t-from">Ideas</span><span class="t-arrow">→</span><span class="t-to">Tangible concepts</span></div>
+  </div>
+  <p class="cta-note reveal">Participants leave with insights they can immediately apply in their work and life.</p>
+</section>
 
-  <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+<!-- SESSION -->
+<section id="session">
+  <h2 class="section-title reveal">Book a 1:1 Clarity Conversation</h2>
+  <div class="title-line reveal"></div>
+  <p class="about-intro reveal" style="margin-bottom:3rem;">Sometimes one conversation can unlock more clarity than weeks of thinking alone.</p>
+  <div class="session-inner">
+    <div class="reveal d1">
+      <h4 style="font-size:0.8rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem;">In this session we explore:</h4>
+      <ul class="session-points">
+        <li><span class="dot"></span>Your current challenge</li>
+        <li><span class="dot"></span>What might be blocking progress</li>
+        <li><span class="dot"></span>Possible next steps</li>
+      </ul>
+      <p class="session-format">Format: 30 minute conversation</p>
+    </div>
+    <div class="reveal d2">
+      <div class="calendly-inline-widget" data-url="https://calendly.com/zsinidesign/30min?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=8B3FD9"></div>
+    </div>
+  </div>
+</section>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    /* ---- WORKSHOP TOGGLE ---- */
-    var open = false;
-    function workshopToggle() {
-      open = !open;
-      document.getElementById('details1').style.display = open ? 'block' : 'none';
-      document.getElementById('details2').style.display = open ? 'block' : 'none';
-      document.getElementById('details3').style.display = open ? 'block' : 'none';
-      var txt = open ? 'Show less ↑' : 'Read more ↓';
-      document.getElementById('btn1').textContent = txt;
-      document.getElementById('btn2').textContent = txt;
-      document.getElementById('btn3').textContent = txt;
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <h2 class="section-title reveal">What <span style="text-decoration:underline;text-decoration-color:var(--purple);">People</span> Say</h2>
+  <div class="title-line reveal"></div>
+  <div class="testimonials-grid">
+    <div class="testimonial reveal d1">
+      <div class="quote-icon">"</div>
+      <blockquote>Very insightful and perfectly adapted to our needs.</blockquote>
+      <p class="testimonial-author">— Anna</p>
+    </div>
+    <div class="testimonial reveal d2">
+      <div class="quote-icon">"</div>
+      <blockquote>Engaging, hands-on, and full of fresh ideas.</blockquote>
+      <p class="testimonial-author">— Juli, Architect</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <h2 class="section-title reveal">Contact</h2>
+  <div class="title-line reveal"></div>
+  <form class="contact-form reveal" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+    <input type="hidden" name="access_key" value="cda76d87-df1c-4f89-b217-7a239eb1b0a1">
+    <input type="hidden" name="subject" value="New message from Bravass website">
+    <input type="hidden" name="replyto" value="zsinidesign@gmail.com">
+    <input type="hidden" name="redirect" value="false">
+    <div class="form-field">
+      <label for="f-name">Name</label>
+      <input type="text" id="f-name" name="name" placeholder="Your name" required autocomplete="name">
+    </div>
+    <div class="form-field">
+      <label for="f-email">Email</label>
+      <input type="email" id="f-email" name="email" placeholder="your@email.com" required autocomplete="email">
+    </div>
+    <div class="form-field">
+      <label for="f-msg">Message</label>
+      <textarea id="f-msg" name="message" placeholder="What's on your mind?"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary" id="submit-btn">Send Message</button>
+  </form>
+  <div class="form-success" id="form-success">✓ Message sent! I'll get back to you soon.</div>
+  <div class="social-links reveal">
+    <a href="https://instagram.com/bravasspace" target="_blank" aria-label="Instagram">IG</a>
+    <a href="mailto:zsinidesign@gmail.com" aria-label="Email">✉</a>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="logo" aria-label="Bravass">
+    <img src="bravass.svg" alt="Bravass" style="height:28px;width:auto;opacity:0.75;">
+  </a>
+  <ul class="footer-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#workshops">Workshops</a></li>
+    <li><a href="#session">1:1 Sessions</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <span>© 2025 Bravass</span>
+</footer>
+
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+<script>
+/* ============================
+   WORKSHOP TOGGLE
+   Uses data-attribute to track state
+   so there is zero variable conflict
+   ============================ */
+function toggleWorkshops() {
+  var det1 = document.getElementById('card-det-1');
+  var det2 = document.getElementById('card-det-2');
+  var det3 = document.getElementById('card-det-3');
+  var btn1 = document.getElementById('card-btn-1');
+  var btn2 = document.getElementById('card-btn-2');
+  var btn3 = document.getElementById('card-btn-3');
+
+  var isHidden = det1.style.display === 'none' || det1.style.display === '';
+
+  det1.style.display = isHidden ? 'block' : 'none';
+  det2.style.display = isHidden ? 'block' : 'none';
+  det3.style.display = isHidden ? 'block' : 'none';
+
+  var label = isHidden ? 'Show less \u2191' : 'Read more \u2193';
+  btn1.textContent = label;
+  btn2.textContent = label;
+  btn3.textContent = label;
+}
+
+/* ============================
+   HAMBURGER
+   ============================ */
+var hamburgerBtn = document.getElementById('hamburger');
+var mobileMenuEl = document.getElementById('mobile-menu');
+
+hamburgerBtn.addEventListener('click', function() {
+  var isOpen = hamburgerBtn.classList.toggle('open');
+  if (isOpen) {
+    mobileMenuEl.classList.add('open');
+  } else {
+    mobileMenuEl.classList.remove('open');
+  }
+});
+
+function closeMobileMenu() {
+  hamburgerBtn.classList.remove('open');
+  mobileMenuEl.classList.remove('open');
+}
+
+/* ============================
+   SCROLL EFFECTS
+   ============================ */
+var navEl = document.getElementById('navbar');
+var allSections = document.querySelectorAll('section[id]');
+var navLinkItems = document.querySelectorAll('.nav-links a');
+
+window.addEventListener('scroll', function() {
+  navEl.classList.toggle('scrolled', window.scrollY > 20);
+  document.getElementById('back-to-top').classList.toggle('visible', window.scrollY > 400);
+  var current = '';
+  allSections.forEach(function(sec) {
+    if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
+  });
+  navLinkItems.forEach(function(link) {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+  });
+});
+
+/* ============================
+   SCROLL REVEAL
+   ============================ */
+var revealItems = document.querySelectorAll('.reveal');
+revealItems.forEach(function(el) {
+  el.classList.add('hidden');
+});
+var revealObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.remove('hidden');
+      revealObserver.unobserve(entry.target);
     }
+  });
+}, { threshold: 0.1 });
+revealItems.forEach(function(el) {
+  revealObserver.observe(el);
+});
 
-    /* ---- NAV ---- */
-    var hamburger = document.getElementById('hamburger');
-    var mobileMenu = document.getElementById('mobile-menu');
-    hamburger.addEventListener('click', function() {
-      var isOpen = hamburger.classList.toggle('open');
-      mobileMenu.classList.toggle('open', isOpen);
+/* ============================
+   CONTACT FORM
+   ============================ */
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  var btn = document.getElementById('submit-btn');
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+  try {
+    var response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: new FormData(this)
     });
-    function closeMobile() {
-      hamburger.classList.remove('open');
-      mobileMenu.classList.remove('open');
+    var result = await response.json();
+    if (result.success) {
+      this.style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    } else {
+      btn.textContent = 'Something went wrong — try again';
+      btn.disabled = false;
     }
-
-    /* ---- SCROLL ---- */
-    var navbar = document.getElementById('navbar');
-    var sections = document.querySelectorAll('section[id]');
-    var navLinks = document.querySelectorAll('.nav-links a');
-    window.addEventListener('scroll', function() {
-      navbar.classList.toggle('scrolled', window.scrollY > 20);
-      document.getElementById('back-to-top').classList.toggle('visible', window.scrollY > 400);
-      var current = '';
-      sections.forEach(function(s) { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
-      navLinks.forEach(function(a) {
-        a.classList.remove('active');
-        if (a.getAttribute('href') === '#' + current) a.classList.add('active');
-      });
-    });
-
-    /* ---- REVEAL ---- */
-    var revealEls = document.querySelectorAll('.reveal');
-    revealEls.forEach(function(el) { el.classList.add('hidden'); });
-    var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) {
-        if (e.isIntersecting) { e.target.classList.remove('hidden'); observer.unobserve(e.target); }
-      });
-    }, { threshold: 0.1 });
-    revealEls.forEach(function(el) { observer.observe(el); });
-
-    /* ---- CONTACT FORM ---- */
-    document.getElementById('contact-form').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      var btn = document.getElementById('submit-btn');
-      btn.textContent = 'Sending...';
-      btn.disabled = true;
-      try {
-        var res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(this) });
-        var data = await res.json();
-        if (data.success) {
-          this.style.display = 'none';
-          document.getElementById('form-success').style.display = 'block';
-        } else {
-          btn.textContent = 'Something went wrong — try again';
-          btn.disabled = false;
-        }
-      }
+  } catch(err) {
+    btn.textContent = 'Something went wrong — try again';
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
